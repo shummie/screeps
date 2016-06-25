@@ -3,7 +3,6 @@ var roleBuilder = require('role.builder');
 var roleMiner = require('role.miner');
 var roleFixer = require('role.fixer');
 var roleRefiller = require('role.refiller');
-var roleFarMiner = require('role.farMiner');
 
 module.exports.loop = function () {
 
@@ -59,8 +58,5 @@ module.exports.loop = function () {
         if(creep.memory.role == 'fixer') {
             roleFixer.run(creep);
         }
-		if(creep.memory.role == 'farMiner') {
-			roleFarMiner.run(creep);
-		}
     }
 }
