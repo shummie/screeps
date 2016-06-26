@@ -55,7 +55,7 @@ var roleRefiller = {
 			
 			// We have a path, let's move
 			if (creep.memory.path) {
-				if (creep.memory.target.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+				if (Game.getObjectById(creep.memory.target.id).transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					creep.moveByPath(creep.memory.path);
 				}
 			}
