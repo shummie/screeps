@@ -59,6 +59,7 @@ profiler.wrap(function() {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'fixer'});
 			console.log('Spawning new fixer: ' + newName);
 		}
+		else if(upgraders.length < 7) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
 			console.log('Spawning new upgrader: ' + newName);
 		}
