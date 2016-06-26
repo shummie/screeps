@@ -12,7 +12,7 @@ var roleUpgrader = {
 		
 		if(creep.memory.upgrading) {
 			if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+                creep.moveTo(creep.room.controller, {reusePath: 10});
 			
             }
 	    }
@@ -20,7 +20,7 @@ var roleUpgrader = {
             
 			var sources = creep.room.find(FIND_SOURCES);
             if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1]);
+                creep.moveTo(sources[1], {reusePath: 10});
             }		
         }
 	}

@@ -13,7 +13,7 @@ var roleMiner = {
 		if(creep.memory.mining) {
 			var sources = creep.room.find(FIND_SOURCES);
 			if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(sources[0]);
+				creep.moveTo(sources[0], {reusePath: 10});
 			}
 		}
 		else {
@@ -26,7 +26,7 @@ var roleMiner = {
 			if (targets.length > 0) {
 				target = creep.pos.findClosestByPath(targets)
 				if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(target);
+					creep.moveTo(target, {reusePath: 10});
 				}
 			}
 		}

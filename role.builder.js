@@ -14,7 +14,7 @@ var roleBuilder = {
 	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             if(targets.length) {
                 if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+                    creep.moveTo(targets[0], {reusePath: 10});
                 }
             }
 			else {
@@ -26,7 +26,7 @@ var roleBuilder = {
 				
 				if (damagedStructures) {
 					if (creep.repair(damagedStructures[0]) == ERR_NOT_IN_RANGE) {
-						creep.moveTo(damagedStructures[0]);
+						creep.moveTo(damagedStructures[0], {reusePath: 10});
 					}
 				}
 			}
@@ -49,7 +49,7 @@ var roleBuilder = {
 			}
 			else {
 				if (sources[0].transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(sources[0]);
+					creep.moveTo(sources[0], {reusePath: 10});
 				}
 			}
 	    }

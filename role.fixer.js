@@ -20,7 +20,7 @@ var roleFixer = {
 			
 			if (damagedStructures) {
 				if (creep.repair(damagedStructures[0]) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(damagedStructures[0]);
+					creep.moveTo(damagedStructures[0], {reusePath: 10});
 				}
 			}
 		}
@@ -33,7 +33,7 @@ var roleFixer = {
 			
 			if (targets.length > 0) {
 				if(targets[0].transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(targets[0]);
+					creep.moveTo(targets[0], {reusePath: 10});
 				}
 			}
 		}

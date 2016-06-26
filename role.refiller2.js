@@ -2,50 +2,57 @@ var roleRefiller = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
+
+    	// Creep.memory.state can have the following options for a refiller:
+    	// gettingEnergy -- triggers when energy = 0
+    	// refillingStructure -- triggers when energy is full
+
+    	if (!creep.memory.state) {
+    		// Set the initial state if it doesn't exist
+    		creep.memory.state = "gettingEnergy";
+    		creep.memory.target = null;
+    	}
 		
-		if(creep.carry.energy == 0) {
-            creep.memory.refilling = false;
-			creep.memory.path = null;
+		if(creep.carry.energy == 0 && creep.memory.state != "gettingEnergy") {
+            creep.memory.state = "gettingEnergy" // Set the new state
 			creep.memory.target = null;
+			creep.memory._move = null;
 	    }
-	    if(!creep.memory.refilling && creep.carry.energy == creep.carryCapacity) {
-	        creep.memory.refilling = true;
-			creep.memory.path = null;
+	    else if(creep.memory.state != "refillingStructure" && creep.carry.energy == creep.carryCapacity) {
+	        creep.memory.state = "refillingStructure";
 			creep.memory.target = null;
+			creep.memory._move = null;
 	    }
 				
-		if(creep.memory.refilling) {
+		if(creep.memory.state == "refillingStructure") {
 			
 			// We have a path, let's move.
-			if (creep.memory.path) {
+			if (creep.memory.target) {
 				if(creep.transfer(creep.memory.target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveByPath(creep.memory.path);
+					creep.moveTo(Game.getObjectById(creep.memory.target.id), {reusePath: 10});
 				}
 			}
-			
 			// Else, let's find a spawn/extension to move to.
 			else {
 				
 				var targets = creep.room.find(FIND_STRUCTURES, {
 						filter: (structure) => {
-							return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION) && structure.energy < structure.energyCapacity;
+							return (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
 						}
 				});
 				if(targets.length > 0) {
-					
-					// Store the path in memory
-					creep.memory.path = creep.pos.findPathTo(targets[0]);
+					// Store the target in memory
 					creep.memory.target = targets[0];				
 				}
 			}
 	    }
 		
-        else {
+        else if (creep.memory.state == "gettingEnergy") {
 			
 			// We have a path, let's move
-			if (creep.memory.path) {
-				if (creep.memory.target.transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveByPath(creep.memory.path);
+			if (creep.memory.target) {
+				if (Game.getObjectById(creep.memory.target.id).transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					creep.moveTo(Game.getObjectById(creep.memory.target.id), {reusePath: 10});
 				}
 			}
 			
@@ -57,7 +64,6 @@ var roleRefiller = {
 					}
 				});	
 				if (sources.length > 0) {
-					creep.memory.path = creep.pos.findPathTo(sources[0]);
 					creep.memory.target = sources[0];
 				}
 				else {
@@ -66,7 +72,6 @@ var roleRefiller = {
 					if (emergency) {
 						var sources = creep.room.find(FIND_SOURCES);
 						creep.memory.target = sources[0];
-						creep.memory.path = creep.pos.findPathTo(sources[0]);
 					}
 				}
 			}

@@ -28,6 +28,14 @@ profiler.wrap(function() {
     }
     
 	if (Game.spawns.Spawn1.room.energyAvailable >= 550) {
+		if(miners.length < 1) {
+			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE], undefined, {role: 'miner'});
+			console.log('Spawning new miner: ' + newName);
+		}
+		else if(refillers.length < 2) {
+			var newName = Game.spawns.Spawn1.createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'refiller'});
+			console.log('Spawning new refiller: ' + newName);
+		}
 		if(miners.length < 3) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE], undefined, {role: 'miner'});
 			console.log('Spawning new miner: ' + newName);
