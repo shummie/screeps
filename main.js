@@ -27,6 +27,8 @@ profiler.wrap(function() {
             delete Memory.creeps[name];
         }
     }
+
+    var constructionSites = Game.spawns.Spawn1.room.find(FIND_CONSTRUCTION_SITES);
     
 	if (Game.spawns.Spawn1.room.energyAvailable >= 550) {
 		if(miners.length < 1) {
@@ -37,7 +39,7 @@ profiler.wrap(function() {
 			var newName = Game.spawns.Spawn1.createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'refiller'});
 			console.log('Spawning new refiller: ' + newName);
 		}
-		if(miners.length < 3) {
+		else if(miners.length < 3) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE], undefined, {role: 'miner'});
 			console.log('Spawning new miner: ' + newName);
 		}
@@ -49,13 +51,16 @@ profiler.wrap(function() {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
 			console.log('Spawning new upgrader: ' + newName);
 		}
-		else if(builders.length < 3) {
+		else if(builders.length < 3 && constructionSites.length > 0) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'builder'});
 			console.log('Spawning new builder: ' + newName);
 		}
 		else if(fixers.length < 2) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'fixer'});
 			console.log('Spawning new fixer: ' + newName);
+		}
+			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
+			console.log('Spawning new upgrader: ' + newName);
 		}
 	}
 
