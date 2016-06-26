@@ -26,8 +26,6 @@ profiler.wrap(function() {
             delete Memory.creeps[name];
         }
     }
-
-    if ()
     
 	if (Game.spawns.Spawn1.room.energyAvailable >= 550) {
 		if(miners.length < 3) {
@@ -71,7 +69,7 @@ profiler.wrap(function() {
         }
     }
 
-    
+
 });
 
 }
