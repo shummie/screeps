@@ -4,7 +4,16 @@ var roleMiner = require('role.miner');
 var roleFixer = require('role.fixer');
 var roleRefiller = require('role.refiller');
 
+// Any modules that you use that modify the game's prototypes should be require'd
+// before you require the profiler.
+var profiler = require('screeps-profiler');
+
+// This line monkey patches the global prototypes.
+profiler.enable();
+
 module.exports.loop = function () {
+
+profiler.wrap(function() {
 
 	var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 	var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
@@ -17,6 +26,8 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
+
+    if ()
     
 	if (Game.spawns.Spawn1.room.energyAvailable >= 550) {
 		if(miners.length < 3) {
@@ -59,4 +70,8 @@ module.exports.loop = function () {
             roleFixer.run(creep);
         }
     }
+
+    
+});
+
 }
