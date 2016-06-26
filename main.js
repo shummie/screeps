@@ -3,6 +3,7 @@ var roleBuilder = require('role.builder');
 var roleMiner = require('role.miner');
 var roleFixer = require('role.fixer');
 var roleRefiller = require('role.refiller');
+var roleFarMiner = require('role.farMiner');
 
 // Any modules that you use that modify the game's prototypes should be require'd
 // before you require the profiler.
@@ -74,6 +75,9 @@ profiler.wrap(function() {
         }
         if(creep.memory.role == 'fixer') {
             roleFixer.run(creep);
+        }
+        if(creep.name == "FarMinerAlpha") {
+        	roleFarMiner.run(creep);
         }
     }
 
