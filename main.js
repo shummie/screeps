@@ -87,6 +87,27 @@ profiler.wrap(function() {
         }
     }
 
+    var tower = Game.getObjectById('576f0e7aed1407e029423934');
+    if(tower) {
+        var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        if(closestHostile) {
+            tower.attack(closestHostile);
+        }
+        
+        var target = tower.pos.findClosestByRange(Game.creeps, {
+			filter: function(t)
+			{
+				return t.hits < t.hitsMax
+			}
+		});
+		
+		if(target)
+		{
+			tower.heal(target);
+		}
+        
+    }
+
 
 });
 
