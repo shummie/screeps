@@ -51,11 +51,11 @@ profiler.wrap(function() {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'upgrader'});
 			console.log('Spawning new upgrader: ' + newName);
 		}
-		else if(builders.length < 3 && constructionSites.length > 0) {
+		else if(builders.length < 1 && constructionSites.length > 0) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'builder'});
 			console.log('Spawning new builder: ' + newName);
 		}
-		else if(fixers.length < 2) {
+		else if(fixers.length < 1) {
 			var newName = Game.spawns.Spawn1.createCreep([WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE], undefined, {role: 'fixer'});
 			console.log('Spawning new fixer: ' + newName);
 		}
