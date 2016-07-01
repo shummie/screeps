@@ -34,10 +34,16 @@ const roleMap = {
 function enhanceCreep(creep) {
   switch(creep.memory.role) {
     case 'harvester':
+    case 'miner':
+        creep.memory.role = "harvester";
 		return new Harvester(creep);
 	case 'hauler':
+    case 'refiller':
+        creep.memory.role = "hauler";
 		return new Hauler(creep);
 	case 'builder': 
+    case 'fixer':
+        creep.memory.role = 'builder';
 		return new Builder(creep);
 	case 'upgrader':
 		return new Upgrader(creep);
@@ -49,10 +55,10 @@ function enhanceCreep(creep) {
 }
 
 function convertCreeps() {
-  return Object.keys(Game.creeps).map(creepName => {
-    const creep = Game.creeps[creepName];
-    return enhanceCreep(creep);
-  });
+    return Object.keys(Game.creeps).map(creepName => {
+        const creep = Game.creeps[creepName];
+        return enhanceCreep(creep);
+    });
 }
 
 class CreepManager {

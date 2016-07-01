@@ -1,7 +1,11 @@
-require('structure');
-require('room');
-require('structure-manager');
+
 require('creep-manager');
+require('source');
+require('room');
+require('structure');
+require('room-position');
+require('structure-manager');
+
 
 // Any modules that you use that modify the game's prototypes should be require'd
 // before you require the profiler.
@@ -12,12 +16,18 @@ profiler.enable();
 
 module.exports.loop = function () {
 
-profiler.wrap(function() {
+	profiler.wrap(function() {
 
-	Object.keys(Game.rooms).forEach(roomName => {
-        Game.rooms[roomName].work();
-      });
-	
-});
+	    for(var name in Memory.creeps) {
+	        if(!Game.creeps[name]) {
+	            delete Memory.creeps[name];
+	        }
+	    }
+
+		Object.keys(Game.rooms).forEach(roomName => {
+	        Game.rooms[roomName].work();
+	      });
+		
+	});
 
 }
