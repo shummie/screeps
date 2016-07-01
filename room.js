@@ -77,3 +77,46 @@ Room.prototype.hasHostileCreep = function() {
 Room.prototype.getHostileCreeps = function() {
 	return this.find(FIND_HOSTILE_CREEPS);
 }
+
+Room.prototype.getStorage = function() {
+	if (!this._storageCalc) {
+		this._storageCalc = true;
+		this._storage = this.getMyStructures().filter(structure => {
+			return structure.structureType === STRUCTURE_STORAGE;
+		})[0];
+	}
+	return this._storage;
+}
+
+Room.prototype.getTowers = function() {
+	if (!this._towers) {
+      	this._towers = this.getMyStructures().filter(structure => {
+        	return structure.structureType === STRUCTURE_TOWER;
+    	});
+    }
+    return this._towers;
+}
+
+Room.prototype.getContainers = function () {
+	if (!this._containers) {
+     	this._containers = this.getStructures().filter(structure => {
+        	return structure.structureType === STRUCTURE_CONTAINER;
+      	});
+    }
+    return this._containers;
+}
+
+Room.prototype.getMineralSites = function() {
+    if (!this._minerals) {
+    	this._minerals = this.find(FIND_MINERALS);
+    }
+    return this._minerals;
+}
+
+Room.prototype.getStructures = function() {
+    if (!this._structures) {
+    	const structures = structureManager.structures();
+      	this._structures = structures.filter(structure => structure.room === this);
+    }
+    return this._structures;
+}
