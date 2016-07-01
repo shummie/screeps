@@ -109,6 +109,13 @@ Base.prototype.attemptToUpgrade = function() {
     }
 }
 
+Base.prototype.getSpawn = function() {
+    const spawns = Object.keys(Game.spawns).map(spawnName => Game.spawns[spawnName]);
+    const validSpawn = spawns.find(spawn => {
+        return spawn.room === this.room;
+    });
+    return validSpawn || Game.spawns[this.memory.spawn];
+}
 
 
 

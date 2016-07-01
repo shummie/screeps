@@ -47,6 +47,17 @@ Room.prototype.getExits = function() {
     return this._exits;
 }
 
+
+Room.prototype.getLinks = function() {
+    if (!this._links) {
+      this._links = this.getMyStructures().filter(structure => {
+        return structure.structureType === STRUCTURE_LINK;
+      });
+    }
+
+    return this._links;
+}
+
 Room.prototype.getSources = function() {
     if (!this._sources) {
       this._sources = this.find(FIND_SOURCES);
