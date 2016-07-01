@@ -47,6 +47,10 @@ Room.prototype.getExits = function() {
     return this._exits;
 }
 
+Room.prototype.getConstructionSites = function() {
+    return this.find(FIND_CONSTRUCTION_SITES);
+}
+
 
 Room.prototype.getLinks = function() {
     if (!this._links) {
@@ -71,6 +75,11 @@ Room.prototype.getSourcesNeedingHarvesters = function() {
 	    return source.needsHarvesters();
     });
 }
+
+Room.prototype.needsHarvesters = function() {
+    return this.getSourcesNeedingHarvesters().length > 0;
+}
+
 
 Room.prototype.myCreeps = function() {
     if (!this._myCreeps) {

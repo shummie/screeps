@@ -15,8 +15,20 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 	if (closestSource) {
 		const sourceId = closestSource.id;
 		// TODO: Automate the building process. For now, let's keep it simple:
-		const body = [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE];
+		const body = [WORK,WORK,CARRY,MOVE,CARRY,MOVE,WORK,WORK,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,WORK,MOVE];
 		//const body = [WORK,WORK,CARRY,MOVE];
+
+		// Each miner can empty a whole source by themselves.
+		// Energy Available = 4500 in center rooms, 3000 in owned/reserved room, 1500 in unreserved rooms
+		// Sources regenerate every 300 game ticks
+		// Mining at a constant rate of 10 / tick will fully drain 1 source.
+		// This can be accomplished with 1 miner with 5 work modules (assuming no travel time)
+
+		cost = calculateCosts(body);
+		while (cost > availableEnergy) {
+        	body.pop();
+        cost = calculateCosts(body);
+      	}
 		
 		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });		
 	}
@@ -66,7 +78,7 @@ StructureSpawn.prototype.work = function() {
 			this.buildHauler(availableEnergy);
 		} else if (minerHelperCount < harvesterCount) {
 			this.buildMinerHelper(availableEnergy);		
-		} else if (harvesterCount < 2) {
+		} else if (this.room.needsHarvesters()) {
 			this.buildHarvester(availableEnergy);
 		} else if (haulerCount < 3) {
 			this.buildHauler(availableEnergy);
