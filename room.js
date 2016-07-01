@@ -1,4 +1,5 @@
 var creepManager = require('creep-manager');
+var structureManager = require('structure-manager');
 
 const cardinality = {
 	N: -1,
@@ -64,8 +65,13 @@ Room.prototype.myCreeps = function() {
 }
 
 Room.prototype.work = function() {
+
+	this.getMyStructures().forEach((structure) => {
+      	structure.work();
+    });
+
     this.myCreeps().forEach((creep) => {
-      creep.work();
+      	creep.work();
     });
 }
 
@@ -119,4 +125,79 @@ Room.prototype.getStructures = function() {
       	this._structures = structures.filter(structure => structure.room === this);
     }
     return this._structures;
+}
+
+
+Room.prototype.getMyStructures = function() {
+    if (!this._myStructures) {
+      	const structures = this.getStructures();
+      	this._myStructures = structures.filter(structure => structure.my);
+    }
+
+    return this._myStructures;
+}
+
+Room.prototype.harvesterCount = function() {
+    return this.getHarvesters().length;
+}
+
+Room.prototype.getHarvesters = function() {
+    if (!this._harvesters) {
+    	this._harvesters = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'harvester';
+      	});
+    }
+    return this._harvesters;
+}
+
+Room.prototype.haulerCount = function() {
+    return this.getHaulers().length;
+}
+
+Room.prototype.getHaulers = function() {
+    if (!this._haulers) {
+    	this._haulers = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'hauler';
+      	});
+    }
+    return this._haulers;
+}
+
+Room.prototype.builderCount = function() {
+    return this.getBuilders().length;
+}
+
+Room.prototype.getBuilders = function() {
+    if (!this._builders) {
+    	this._builders = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'builder';
+      	});
+    }
+    return this._builders;
+}
+
+Room.prototype.upgraderCount = function() {
+    return this.getUpgraders().length;
+}
+
+Room.prototype.getUpgraders = function() {
+    if (!this._upgraders) {
+    	this._upgraders = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'upgrader';
+      	});
+    }
+    return this._upgraders;
+}
+
+Room.prototype.fixerCount = function() {
+    return this.getFixers().length;
+}
+
+Room.prototype.getFixers = function() {
+    if (!this._fixers) {
+    	this._fixers = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'fixer';
+      	});
+    }
+    return this._fixers;
 }

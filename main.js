@@ -1,4 +1,6 @@
 require('room');
+require('structure');
+require('structure-manager');
 require('creep-manager');
 
 // Any modules that you use that modify the game's prototypes should be require'd
