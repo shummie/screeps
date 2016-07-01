@@ -119,7 +119,8 @@ Base.prototype.moveToAndUpgrade = function(target) {
     var controllerRange = this.pos.getRangeTo(target);
     if (controllerRange > 1) {
     	this.moveTo(this.room.controller);
-    } else if (controllerRange <= 3) {
+    }  
+    if (controllerRange <= 3) {
      	this.upgradeController(this.room.controller);
     }
 }
