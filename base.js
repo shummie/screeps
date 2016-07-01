@@ -72,6 +72,26 @@ Base.prototype.deliverEnergyTo = function(target) {
 	}
 }
 
+Base.prototype.takeEnergyFrom = function(target) {
+    const range = this.pos.getRangeTo(target);
+    if (target instanceof Energy) {
+      if (range > 1) {
+        this.moveTo(target);
+      }
+      return this.pickup(target);
+    }
+    if (range > 1) {
+      this.moveTo(target);
+    }
+
+    if (!target.transfer || target.structureType && target.structureType === STRUCTURE_TOWER) { // eslint-disable-line
+      return target.transferEnergy(this);
+    }
+
+    return target.transfer(this, RESOURCE_ENERGY);
+}
+
+
 Base.prototype.deliverEnergyToFlag = function(flag) {
 	const range = this.pos.getRangeTo(flag);
 	if (range === 0) {
@@ -117,6 +137,8 @@ Base.prototype.getSpawn = function() {
     return validSpawn || Game.spawns[this.memory.spawn];
 }
 
-
+Base.prototype.needsOffloaded = function() {
+    return this.carry.energy / this.carryCapacity > 0.6;
+}
 
 module.exports = Base;

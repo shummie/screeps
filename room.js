@@ -218,3 +218,75 @@ Room.prototype.getFixers = function() {
     }
     return this._fixers;
 }
+
+Room.prototype.getStructresNeedingEnergyDelivery = function() {
+    if (!this._structuresNeedingEnergyDelivery) {
+        this._structuresNeedingEnergyDelivery = this.getMyStructures().filter(structure => {
+            const notALink = structure.structureType !== STRUCTURE_LINK;
+            const isTower = structure.structureType === STRUCTURE_TOWER;
+            const notASourceTower = isTower ? !structure.isSourceTower() : true;
+            const notFull = structure.energyCapacity && structure.energy < structure.energyCapacity;
+            return notFull && notALink && notASourceTower;
+        });
+    }
+    return this._structuresNeedingEnergyDelivery;
+}
+
+Room.prototype.getEnergySourcesThatNeedsStocked = function() {
+    if (this.getEnergyThatNeedsPickedUp().length) {
+        return this.getEnergyThatNeedsPickedUp();
+    } else if (this.getCreepsThatNeedOffloading().length) {
+        return this.getCreepsThatNeedOffloading();
+    } else if (this.getStorage() && !this.getStorage().isEmpty()) {
+        return [this.getStorage()];
+    } 
+    /*
+    else if (this.getTowers().length) {
+        // All towers that aren't empty are a source of energy
+        return this.getTowers().filter(tower => {
+            return !tower.isEmpty();
+        });
+    }
+    */
+
+    return [];
+  }
+}
+
+Room.prototype.getEnergyThatNeedsPickedUp = function() {
+    const targets = this.courierTargets();
+    //const dumpFlag = this.getControllerEnergyDropFlag();
+
+    return this.getDroppedEnergy().filter(energy => {
+        const targeted = targets.indexOf(energy.id) !== -1;
+        const inRange = energy.pos.getRangeTo(this.getCenterPosition()) < 23;
+        //return !targeted && inRange && energy.pos.getRangeTo(dumpFlag) !== 0;
+        return !targeted && inRange !== 0;
+    });
+  }
+
+Room.prototype.getCenterPosition = function() {
+    return new RoomPosition(25, 25, this.name);
+}
+
+Room.prototype.getDroppedEnergy = function() {
+    return this.find(FIND_DROPPED_ENERGY).sort((energyA, energyB) => {
+        return energyB.energy - energyA.energy;
+    });
+}
+
+Room.prototype.getCreepsThatNeedOffloading = function() {
+    const targets = this.haulerTargets();
+    return this.getHarvesters().filter(harvester => {
+      const targeted = targets.indexOf(harvester.id) !== -1;
+      return harvester.needsOffloaded() && !targeted;
+    });
+}
+
+Room.prototype.haulerTargets = function() {
+    return this.getHaulers().filter(creep => {
+      return creep.memory.role === 'hauler' && !!creep.memory.target;
+    }).map(hauler => {
+      return hauler.memory.target;
+    });
+}
