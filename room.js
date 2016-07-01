@@ -219,14 +219,28 @@ Room.prototype.getFixers = function() {
     return this._fixers;
 }
 
-Room.prototype.getStructresNeedingEnergyDelivery = function() {
+Room.prototype.minerHelperCount = function() {
+    return this.getMinerHelpers().length;
+}
+
+Room.prototype.getMinerHelpers = function() {
+    if (!this._minerHelpers) {
+    	this._minerHelpers = this.myCreeps().filter((creep) => {
+        	return creep.memory.role === 'minerHelper';
+      	});
+    }
+    return this._minerHelpers;
+}
+
+Room.prototype.getStructuresNeedingEnergyDelivery = function() {
     if (!this._structuresNeedingEnergyDelivery) {
         this._structuresNeedingEnergyDelivery = this.getMyStructures().filter(structure => {
             const notALink = structure.structureType !== STRUCTURE_LINK;
-            const isTower = structure.structureType === STRUCTURE_TOWER;
-            const notASourceTower = isTower ? !structure.isSourceTower() : true;
+            //const isTower = structure.structureType === STRUCTURE_TOWER;
+            //const notASourceTower = isTower ? !structure.isSourceTower() : true;
             const notFull = structure.energyCapacity && structure.energy < structure.energyCapacity;
-            return notFull && notALink && notASourceTower;
+            //return notFull && notALink && notASourceTower; 
+			return notFull && notALink; 
         });
     }
     return this._structuresNeedingEnergyDelivery;
@@ -237,9 +251,12 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
         return this.getEnergyThatNeedsPickedUp();
     } else if (this.getCreepsThatNeedOffloading().length) {
         return this.getCreepsThatNeedOffloading();
+	}
+	/*
     } else if (this.getStorage() && !this.getStorage().isEmpty()) {
         return [this.getStorage()];
     } 
+	*/
     /*
     else if (this.getTowers().length) {
         // All towers that aren't empty are a source of energy
@@ -250,20 +267,34 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
     */
 
     return [];
-  }
+}
+
+
+Room.prototype.getStructuresWithEnergyPickup = function() {
+	if (!this._structuresWithEnergyPickup) {
+		this._structuresWithEnergyPickup = this.getStructures().filter (structure => {return (structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_STORAGE || structure.structureType === STRUCTURE_LINK) && structure.store[RESOURCE_ENERGY] > 0});
+	}
+	return this._structuresWithEnergyPickup;
+}
+
+Room.prototype.getStructuresWithEnergyStorageSpace = function() {
+	if (!this._structuresWithEnergyStorageSpace) {
+		this._structuresWithEnergyStorageSpace = this.getStructures().filter (structure => {return (structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_STORAGE || structure.structureType === STRUCTURE_LINK) && _.sum(structure.store) < structure.storeCapacity});
+	}
+	return this._structuresWithEnergyStorageSpace;
 }
 
 Room.prototype.getEnergyThatNeedsPickedUp = function() {
-    const targets = this.courierTargets();
+    //const targets = this.courierTargets();
     //const dumpFlag = this.getControllerEnergyDropFlag();
 
     return this.getDroppedEnergy().filter(energy => {
-        const targeted = targets.indexOf(energy.id) !== -1;
+        //const targeted = targets.indexOf(energy.id) !== -1;
         const inRange = energy.pos.getRangeTo(this.getCenterPosition()) < 23;
         //return !targeted && inRange && energy.pos.getRangeTo(dumpFlag) !== 0;
-        return !targeted && inRange !== 0;
+        return inRange !== 0;
     });
-  }
+}
 
 Room.prototype.getCenterPosition = function() {
     return new RoomPosition(25, 25, this.name);
@@ -276,6 +307,7 @@ Room.prototype.getDroppedEnergy = function() {
 }
 
 Room.prototype.getCreepsThatNeedOffloading = function() {
+	// This will return a list of harvesters that have energy to offload.
     const targets = this.haulerTargets();
     return this.getHarvesters().filter(harvester => {
       const targeted = targets.indexOf(harvester.id) !== -1;

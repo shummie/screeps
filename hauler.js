@@ -9,19 +9,21 @@ class Hauler extends Base {
 
 Hauler.prototype.performRole = function() {
 	
-	if (this.carry.energy == this.carryCapacity) {
+	if (this.carry.energy === this.carryCapacity) {
 		// If we're full, let's deliver the energy to the closest target.
 		this.memory.task = "deliver";
 	} else if (this.carry.energy === 0){
 		// If we have no energy left, let's get some.
-		this.memory.task = "pickup"
+		this.memory.task = "pickup";
 	}
 
 
 
 	if (this.memory.task === "pickup") {
 		if (!this.memory.target) {
-			const target = this.room.getEnergySourcesThatNeedsStocked()[0];
+			//const target = this.room.getEnergySourcesThatNeedsStocked()[0];
+			const availEnergyStructs = this.room.getStructuresWithEnergyPickup();
+			const target = this.pos.findClosestByRange(availEnergyStructs);
 			this.memory.target = target ? target.id : '';
 		}
 

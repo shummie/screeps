@@ -1,15 +1,16 @@
-//import Builder from '../roles/Builder';
+var Builder = require('builder');
 //import Claimer from '../roles/Claimer';
 //import Courier from '../roles/Courier';
 var Harvester = require('harvester');
-//import Harvester from 'harvester';
 //import Mailman from '../roles/Mailman';
+var Hauler = require('hauler');
+var MinerHelper = require('miner-helper');
 //import RemoteHarvester from '../roles/RemoteHarvester';
 //import Reserver from '../roles/Reserver';
 //import RoadWorker from '../roles/RoadWorker';
 //import Scout from '../roles/Scout';
 //import ScoutHarvester from '../roles/ScoutHarvester';
-//import Upgrader from '../roles/Upgrader';
+var Upgrader = require('upgrader');
 //import Wanderer from '../roles/Wanderer';
 
 /*
@@ -33,7 +34,15 @@ const roleMap = {
 function enhanceCreep(creep) {
   switch(creep.memory.role) {
     case 'harvester':
-      return new Harvester(creep);
+		return new Harvester(creep);
+	case 'hauler':
+		return new Hauler(creep);
+	case 'builder': 
+		return new Builder(creep);
+	case 'upgrader':
+		return new Upgrader(creep);
+	case 'minerHelper':
+		return new MinerHelper(creep);
   }
   //return new roleMap[creep.memory.role](creep);
   //  return new Harvester(creep);

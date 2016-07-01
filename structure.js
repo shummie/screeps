@@ -10,11 +10,11 @@ Structure.prototype.work = function() {
 	}
 }
 
-Structure.prototype.isControllerLink = function() {
+Structure.prototype.isControllerLink() {
 	return this.structureType === STRUCTURE_LINK && this.pos.getRangeTo(this.room.controller) < 5;
 }
 
-Structure.prototype.isFull = function() {
+Structure.prototype.isFull() {
 	if (this.energyCapacity) {
 		return this.energy === this.energyCapacity;
 	} else if (this.storeCapacity) {
@@ -23,11 +23,11 @@ Structure.prototype.isFull = function() {
 	return true;
 }
 
-Structure.prototype.needsRepair = function() {
+Structure.prototype.needsRepair() {
 	return this.hits < this.hitsMax;
 }
 
-Structure.prototype.isEmpty = function() {
+Structure.isEmpty () {
 	if (this.energyCapacity) {
 		return this.energy === 0;
 	} else if (this.storeCapacity) {

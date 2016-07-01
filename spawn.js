@@ -1,4 +1,3 @@
-
 var calculateCosts = function(bodyParts) {
     let cost = 0;
     bodyParts.forEach((bodyPart) => {
@@ -16,25 +15,34 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 	if (closestSource) {
 		const sourceId = closestSource.id;
 		// TODO: Automate the building process. For now, let's keep it simple:
-		const body = [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE];
+		// const body = [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE];
+		const body = [WORK,WORK,CARRY,MOVE];
 		
 		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });		
 	}
 }
 
 StructureSpawn.prototype.buildHauler = function(availableEnergy) {
-	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	//const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
 	this.createCreep(body, undefined, { role: 'hauler' });
 }
 
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
-	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	//const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	const body = [WORK,CARRY,CARRY,MOVE,MOVE];
 	this.createCreep(body, undefined, {role: 'builder'});
 }
 
 StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
-	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	//const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	const body = [WORK,CARRY,CARRY,MOVE,MOVE];
 	this.createCreep(body, undefined, {role: 'upgrader'});
+}
+
+StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
+	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	this.createCreep(body, undefined, {role: 'minerHelper'});
 }
 
 StructureSpawn.prototype.work = function() {
@@ -47,7 +55,7 @@ StructureSpawn.prototype.work = function() {
 	const haulerCount = this.room.haulerCount();
 	const upgraderCount = this.room.upgraderCount();
 	const builderCount = this.room.builderCount();
-	const fixerCount = this.room.fixerCount();
+	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
 	
 	if (availableEnergy >= 550) {
@@ -55,16 +63,18 @@ StructureSpawn.prototype.work = function() {
 			this.buildHarvester(availableEnergy);
 		} else if (haulerCount < 1) {
 			this.buildHauler(availableEnergy);
+		} else if (minerHelperCount < harvesterCount) {
+			this.buildMinerHelper(availableEnergy);		
 		} else if (harvesterCount < 2) {
 			this.buildHarvester(availableEnergy);
 		} else if (haulerCount < 3) {
 			this.buildHauler(availableEnergy);
 		} else if (upgraderCount < 4) {
 			this.buildUpgrader(availableEnergy);
-		} else if (buildersCount < 1 && this.room.getConstructionSites().length > 0) {
+		} else if (builderCount < 1 && this.room.getConstructionSites().length > 0) {
 			this.buildBuilder(availableEnergy);
-		} else if (fixers.length < 1) {
-			this.buildFixer(availableEnergy);
+		/*} else if (fixers.length < 1) {
+			this.buildFixer(availableEnergy);*/
 		} else if (upgraderCount < 8) {
 			this.buildUpgrader(availableEnergy);
 		}
@@ -78,4 +88,3 @@ StructureSpawn.prototype.maxEnergy = function() {
 StructureSpawn.prototype.availableEnergy = function() {
 	return this.room.energyAvailable;
 }
-
