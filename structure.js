@@ -18,7 +18,7 @@ Structure.prototype.isFull = function() {
 	if (this.energyCapacity) {
 		return this.energy === this.energyCapacity;
 	} else if (this.storeCapacity) {
-		return this.store === this.storeCapacity;
+		return _.sum(this.store) === this.storeCapacity;
 	}
 	return true;
 }
@@ -31,7 +31,7 @@ Structure.prototype.isEmpty = function() {
 	if (this.energyCapacity) {
 		return this.energy === 0;
 	} else if (this.storeCapacity) {
-		return this.store === 0;
+		return _.sum(this.store) === 0;
 	}
 	return true;
 }
