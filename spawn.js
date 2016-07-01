@@ -15,28 +15,28 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 	if (closestSource) {
 		const sourceId = closestSource.id;
 		// TODO: Automate the building process. For now, let's keep it simple:
-		// const body = [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE];
-		const body = [WORK,WORK,CARRY,MOVE];
+		const body = [WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE];
+		//const body = [WORK,WORK,CARRY,MOVE];
 		
 		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });		
 	}
 }
 
 StructureSpawn.prototype.buildHauler = function(availableEnergy) {
-	//const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
-	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	//const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
 	this.createCreep(body, undefined, { role: 'hauler' });
 }
 
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
-	//const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-	const body = [WORK,CARRY,CARRY,MOVE,MOVE];
+	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
 	this.createCreep(body, undefined, {role: 'builder'});
 }
 
 StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
-	//const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-	const body = [WORK,CARRY,CARRY,MOVE,MOVE];
+	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
 	this.createCreep(body, undefined, {role: 'upgrader'});
 }
 
