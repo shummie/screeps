@@ -7,6 +7,7 @@ import Wall from '../structures/Wall';
 import Rampart from '../structures/Rampart';
 */
 var Spawn = require('spawn');
+var Tower = require('tower');
 
 /*
 const structureMap = {

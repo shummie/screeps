@@ -93,7 +93,7 @@ Room.prototype.work = function() {
 }
 
 
-Room.prototype.hasHostileCreep = function() {
+Room.prototype.hasHostileCreeps = function() {
 	return this.getHostileCreeps().length > 0;
 }
 
