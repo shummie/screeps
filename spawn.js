@@ -55,6 +55,7 @@ StructureSpawn.prototype.work = function() {
 	const haulerCount = this.room.haulerCount();
 	const upgraderCount = this.room.upgraderCount();
 	const builderCount = this.room.builderCount();
+	const minerHelperCount = this.room.minerHelperCount();
 	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
 	
