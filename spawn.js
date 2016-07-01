@@ -1,5 +1,5 @@
 
-calculateCosts = function(bodyParts) {
+var calculateCosts = function(bodyParts) {
     let cost = 0;
     bodyParts.forEach((bodyPart) => {
         const part = typeof bodyPart === 'string' ? bodyPart : bodyPart.type;

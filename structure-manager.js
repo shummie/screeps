@@ -29,8 +29,8 @@ function convertStructures() {
   return normalStructures.map(structure => {
     // Not sure if this will work, so need to TEST it.
     switch(structure.structureType) {
-        case STRUCTURE_TOWER:
-            return new Tower(structure.id);
+        case STRUCTURE_SPAWN:
+            return new Spawn(structure.id);
         default: 
             return structure;
     }    

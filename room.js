@@ -55,6 +55,12 @@ Room.prototype.getSources = function() {
     return this._sources;
 }
 
+Room.prototype.getSourcesNeedingHarvesters = function() {
+    return this.getSources().filter(source => {
+	    return source.needsHarvesters();
+    });
+}
+
 Room.prototype.myCreeps = function() {
     if (!this._myCreeps) {
     	this._myCreeps = creepManager.creeps().filter(creep => creep.room === this);
