@@ -116,10 +116,11 @@ Base.prototype.moveInRandomDirection = function() {
 
 
 Base.prototype.moveToAndUpgrade = function(target) {
-    if (this.pos.getRangeTo(target) > 1) {
+    var controllerRange = this.pos.getRangeTo(target);
+    if (controllerRange > 1) {
     	this.moveTo(this.room.controller);
-    } else {
-     	this.attemptToUpgrade();
+    } else if (controllerRange <= 3) {
+     	this.upgradeController(this.room.controller);
     }
 }
 
