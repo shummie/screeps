@@ -14,13 +14,13 @@ MinerHelper.prototype.performRole = function() {
 		
 	if (this.carry.energy == this.carryCapacity) {
 		this.memory.task = "deliver";
-	} else if (this.carry.enery === 0) {
+	} else if (this.carry.energy === 0) {
 		this.memory.task = "pickup";
 	}
 	
 	if (this.memory.task === "deliver") {
 		// We need to deliver the energy to a structure, but we don't have a target yet.
-		const storagePlaces = getStructuresWithEnergyStorageSpace;
+		const storagePlaces = this.room.getStructuresWithEnergyStorageSpace();
 		const target = this.pos.findClosestByRange(storagePlaces);
 		// Probably doing a bit of excess calculations here. Could store the target and not have to recalculate every time we move.
 		this.deliverEnergyTo(target);
