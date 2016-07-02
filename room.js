@@ -372,3 +372,7 @@ Room.prototype.getCouriers = function() {
     }
     return this._couriers;
 }
+
+Room.prototype.courierCount = function() {
+    return this.getCouriers().length;
+}

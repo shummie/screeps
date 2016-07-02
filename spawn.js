@@ -77,6 +77,7 @@ StructureSpawn.prototype.work = function() {
 	}
 	// Else. we're idle, should we spawn something?
 	const harvesterCount = this.room.harvesterCount();
+	const courierCount = this.room.courierCount();
 	const haulerCount = this.room.haulerCount();
 	const upgraderCount = this.room.upgraderCount();
 	const builderCount = this.room.builderCount();
