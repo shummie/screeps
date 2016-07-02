@@ -376,3 +376,16 @@ Room.prototype.getCouriers = function() {
 Room.prototype.courierCount = function() {
     return this.getCouriers().length;
 }
+
+Room.prototype.getMailmans = function() {
+    if (!this._mailmans) {
+        this._mailmans = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'mailman';
+        });
+    }
+    return this._couriers;
+}
+
+Room.prototype.mailmanCount = function() {
+    return this.getMailmans().length;
+}

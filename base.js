@@ -162,4 +162,13 @@ Base.prototype.needsOffloaded = function() {
     return this.carry.energy / this.carryCapacity > 0.6;
 }
 
+Base.prototype.needsEnergyDelivered = function() {
+    const blacklist = ['harvester', 'courier', 'mailman'];
+    if (blacklist.indexOf(this.memory.role) !== -1) {
+        return false;
+    }
+
+    return this.carry.energy / this.carryCapacity < 0.3; 
+}
+
 module.exports = Base;
