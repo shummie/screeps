@@ -124,6 +124,16 @@ Base.prototype.moveToAndBuild = function(target) {
     }
 }
 
+Base.prototype.moveToAndRepair = function(target) {
+    const range = this.pos.getRangeTo(target);
+    if (range > 1) {
+      this.moveTo(target);
+    }
+    if (range <= 3) {
+      this.repair(target);
+    }
+}
+
 Base.prototype.moveToAndUpgrade = function(target) {
     var controllerRange = this.pos.getRangeTo(target);
     if (controllerRange > 1) {
