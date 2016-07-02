@@ -21,13 +21,11 @@ Harvester.prototype.performRole = function() {
         const closestTower = this.pos.findClosestByRange(towers);
         const links = this.room.getLinks();
         const closestLink = this.pos.findClosestByRange(links);
-        const rangeToStorage = storage ? this.pos.getRangeTo(storage) : 100;
-        const containers = this.room.getContainers().filter (container => !container.isFull());
-        const closestContainer = this.pos.findClosestByRange(containers);
-
+        const energyStorage = this.room.getStructuresWithEnergyStorageSpace();
+        
         // For now, just deliver to the closest container
-        if (closestContainer) {
-            this.deliverEnergyTo(closestContainer);
+        if (energyStorage) {
+            this.deliverEnergyTo(energyStorage);
         } else if (storage) {
             this.deliverEnergyTo(storage);
         } else {
