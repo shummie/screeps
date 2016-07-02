@@ -25,7 +25,7 @@ Harvester.prototype.performRole = function() {
         
         // For now, just deliver to the closest container
         if (energyStorage) {
-            this.deliverEnergyTo(energyStorage);
+            this.deliverEnergyTo(this.pos.findClosestByRange(energyStorage));
         } else if (storage) {
             this.deliverEnergyTo(storage);
         } else {
