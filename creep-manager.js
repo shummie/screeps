@@ -1,6 +1,7 @@
 var Builder = require('builder');
 //import Claimer from '../roles/Claimer';
 //import Courier from '../roles/Courier';
+var Courier = require('courier');
 var Harvester = require('harvester');
 //import Mailman from '../roles/Mailman';
 var Hauler = require('hauler');
@@ -49,6 +50,8 @@ function enhanceCreep(creep) {
 		return new Upgrader(creep);
 	case 'minerHelper':
 		return new MinerHelper(creep);
+  case 'courier':
+    return new Courier(creep);
   }
   //return new roleMap[creep.memory.role](creep);
   //  return new Harvester(creep);

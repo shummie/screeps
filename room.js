@@ -62,6 +62,10 @@ Room.prototype.getLinks = function() {
     return this._links;
 }
 
+Room.prototype.getControllerOwned = function() {
+    return this.controller && this.controller.my;
+}
+
 Room.prototype.getSources = function() {
     if (!this._sources) {
       this._sources = this.find(FIND_SOURCES);
@@ -241,6 +245,18 @@ Room.prototype.getMinerHelpers = function() {
     return this._minerHelpers;
 }
 
+Room.prototype.getControllerEnergyDropFlag = function() {
+    return this.getFlags().filter(flag => {
+        return flag.name.indexOf('CONTROLLER_ENERGY_DROP') !== -1;
+    })[0];
+}
+
+Room.prototype.getFlags = function(){
+    return this.find(FIND_FLAGS).filter(flag => {
+        return flag.room === this;
+    });
+}
+
 Room.prototype.getStructuresNeedingEnergyDelivery = function() {
     if (!this._structuresNeedingEnergyDelivery) {
         this._structuresNeedingEnergyDelivery = this.getMyStructures().filter(structure => {
@@ -330,4 +346,29 @@ Room.prototype.haulerTargets = function() {
     }).map(hauler => {
       return hauler.memory.target;
     });
+}
+
+
+Room.prototype.needsCouriers = function() {
+    if (this.courierCount() === 1 && this.getCouriers()[0].ticksToLive < 70) {
+      return true;
+    }
+
+    const storage = this.getStorage();
+    if (!storage) {
+      return this.courierCount() < 2;
+    } else if (storage.store.energy > 500000) {
+      return this.courierCount() < Math.floor(storage.store.energy / 200000);
+    }
+
+    return this.courierCount() < 1;
+  }
+
+Room.prototype.getCouriers = function() {
+    if (!this._couriers) {
+        this._couriers = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'courier';
+        });
+    }
+    return this._couriers;
 }

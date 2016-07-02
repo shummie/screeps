@@ -57,6 +57,19 @@ StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
 	this.createCreep(body, undefined, {role: 'minerHelper'});
 }
 
+StructureSpawn.prototype.buildCourier = function(availableEnergy) {
+    const body = [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+    var cost = calculateCosts(body);
+    
+    while (cost > availableEnergy) {
+      body.pop();
+      cost = calculateCosts(body);
+    }
+
+    this.createCreep(body, undefined, { role: 'courier' });
+  }
+
+
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
 		// We're busy, don't do anything else.
@@ -74,7 +87,9 @@ StructureSpawn.prototype.work = function() {
 	if (availableEnergy >= 550) {
 		if (harvesterCount < 1) {
 			this.buildHarvester(availableEnergy);
-		} else if (haulerCount < 1) {
+		} else if (this.room.needsCouriers()) {
+        	this.buildCourier(availableEnergy)
+        } else if (haulerCount < 1) {
 			this.buildHauler(availableEnergy);
 		} else if (minerHelperCount < harvesterCount) {
 			this.buildMinerHelper(availableEnergy);		
