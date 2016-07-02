@@ -24,7 +24,7 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 		// Mining at a constant rate of 10 / tick will fully drain 1 source.
 		// This can be accomplished with 1 miner with 5 work modules (assuming no travel time)
 
-		cost = calculateCosts(body);
+		var cost = calculateCosts(body);
 		while (cost > availableEnergy) {
         	body.pop();
         cost = calculateCosts(body);
@@ -44,9 +44,9 @@ StructureSpawn.prototype.buildHauler = function(availableEnergy) {
 }
 
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
-	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+	const body = [WORK,WORK,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,MOVE,MOVE];
 	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
-	cost = calculateCosts(body);
+	var cost = calculateCosts(body);
 		while (cost > availableEnergy) {
         	body.pop();
         cost = calculateCosts(body);
