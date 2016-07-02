@@ -385,7 +385,7 @@ Room.prototype.getMailmans = function() {
             return creep.memory.role === 'mailman';
         });
     }
-    return this._couriers;
+    return this._mailmans;
 }
 
 Room.prototype.mailmanCount = function() {
@@ -446,4 +446,30 @@ Room.prototype.maxEnergyProducedPerTick = function() {
 
 Room.prototype.sourceCount = function() {
     return this.getSources().length;
+  }
+
+Room.prototype.needsUpgraders = function() {
+    const hasFreeEdges = this.upgraderCount() < this.controller.pos.freeEdges();
+    //return hasFreeEdges && !!this.droppedControllerEnergy() &&
+    return hasFreeEdges && this.upgraderWorkParts() < this.maxEnergyProducedPerTick()
+      
+}
+
+Room.prototype.upgraderWorkParts = function() {
+    if (!this._upgraderWorkParts) {
+      let parts = this.getUpgraders();
+      parts = parts.map(upgrader => {
+        return upgrader.body.filter(bodyPart => {
+          return bodyPart.type === WORK;
+        }).length;
+      });
+
+      if (parts.length) {
+        this._upgraderWorkParts = parts.reduce((a, b) => { return a + b; });
+      } else {
+        this._upgraderWorkParts = 0;
+      }
+    }
+
+    return this._upgraderWorkParts;
   }

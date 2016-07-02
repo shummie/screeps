@@ -52,7 +52,7 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
 
     const body = [MOVE, WORK, WORK, CARRY];
     let workParts = 2;
-    let cost = bodyCosts.calculateCosts(body);
+    let cost = calculateCosts(body);
     let workPartsNeeded = this.room.maxEnergyProducedPerTick() - this.room.upgraderWorkParts();
     if (this.room.controller.level === 8) {
       workPartsNeeded = Math.min(15, workPartsNeeded);
@@ -63,12 +63,12 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
     while (cost < availableEnergy && workParts < workPartsNeeded) {
       body.push(WORK);
       workParts++;
-      cost = bodyCosts.calculateCosts(body);
+      cost = calculateCosts(body);
     }
 
     while (cost > availableEnergy) {
       body.pop();
-      cost = bodyCosts.calculateCosts(body);
+      cost = calculateCosts(body);
     }
 
     console.log("Spawning an upgrader in Room " + this.room.roomName);
