@@ -120,8 +120,16 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
   	this.createCreep(body, "Claimer", {role:'claimer'});
   }
 
+StructureSpawn.prototype.buildSpawnBuilder = function(availableEnergy) {
+	const body = [WORK,WORK,MOVE,MOVE,MOVE,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	while (cost > availableEnergy) {
+      body.pop();
+      cost = calculateCosts(body);
+    }
 
-
+    console.log("Spawning a spawnBuilder in Room " + this.room.name);
+    this.createCreep(body, undefined, { role: 'spawnBuilder' });
+}
 
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
@@ -137,6 +145,7 @@ StructureSpawn.prototype.work = function() {
 	const builderCount = this.room.builderCount();
 	const minerHelperCount = this.room.minerHelperCount();
 	const mailmanCount = this.room.mailmanCount();
+	//const spawnBuilderCount = this.room.spawnBuilderCount();
 	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
 	
@@ -161,6 +170,8 @@ StructureSpawn.prototype.work = function() {
 			this.buildBuilder(availableEnergy);
 		/*} else if (fixers.length < 1) {
 			this.buildFixer(availableEnergy);*/
+		} else if (Game.needSpawnBuilders && Game.spawnBuilderCount() < 3) {
+			this.buildSpawnBuilder(availableEnergy);
 		}
 	}
 }

@@ -62,4 +62,24 @@ EnhancedGame.getClosestOwnedRoomTo = function(targetRoomName) {
     return roomDistanceMap[targetRoomName];
 }
 
+EnhancedGame.needSpawnBuilders = function() {
+    if (Game.roomArray().filter(hasSpawn => {return hasSpawn.energyAvailable === 0})) {
+        return true;
+    }
+    return false;
+}
+
+EnhancedGame.getSpawnBuilders = function() {
+    if (!this._spawnBuilders) {
+        this._spawnBuilders = Object.keys(Game.creeps).map(creepName => Game.creeps[creepName]).filter((creep) => {
+            return creep.memory.role === 'spawnBuilder';
+        });
+    }
+    return this._spawnBuilders;
+}
+
+EnhancedGame.spawnBuilderCount = function() {
+    return this.getSpawnBuilders().length;
+}
+
 module.exports = EnhancedGame;

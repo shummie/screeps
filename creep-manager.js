@@ -12,6 +12,7 @@ var MinerHelper = require('miner-helper');
 //import RoadWorker from '../roles/RoadWorker';
 //import Scout from '../roles/Scout';
 //import ScoutHarvester from '../roles/ScoutHarvester';
+var SpawnBuilder = require('spawnbuilder');
 var Upgrader = require('upgrader');
 //import Wanderer from '../roles/Wanderer';
 
@@ -57,6 +58,8 @@ function enhanceCreep(creep) {
         return new Mailman(creep);
     case 'claimer':
         return new Claimer(creep);
+    case 'spawnBuilder':
+        return new SpawnBuilder(creep);
     }
   //return new roleMap[creep.memory.role](creep);
   //  return new Harvester(creep);
