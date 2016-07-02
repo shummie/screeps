@@ -1,3 +1,7 @@
+/* Claimer Role
+*  The claimer goes to the nearest flag that says claim and then attemps to claim that room's controller
+*/
+
 var Base = require('base');
 
 class Claimer extends Base {
@@ -24,8 +28,12 @@ Claimer.prototype.moveToAndClaimController = function(controller) {
 	} else {
 		if (this.claimController(controller) === 0) {
 			const claimFlag = Game.claimFlags().filter(flag => {
-				return flag.pos.getRangeTo(controller) === 0;
+				return flag.pos.getRangeTo(controller) <= 1;
 			})[0];
+
+			if (claimFlag) {
+				claimFlag.remove();
+			}
 		}
 	}
 }
