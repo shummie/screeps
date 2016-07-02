@@ -159,6 +159,8 @@ StructureSpawn.prototype.work = function() {
 			this.buildUpgrader(availableEnergy);
         //} else if (haulerCount < 1) {
 		//	this.buildHauler(availableEnergy);
+		} else if (builderCount < 1 && this.room.getConstructionSites().length > 0) {
+			this.buildBuilder(availableEnergy);
 		} else if (minerHelperCount < harvesterCount) {
 			this.buildMinerHelper(availableEnergy);		
 		} else if (this.room.needsHarvesters()) {
@@ -167,8 +169,7 @@ StructureSpawn.prototype.work = function() {
 			this.buildMailman(availableEnergy);
 		//} else if (haulerCount < 3) {
 		//	this.buildHauler(availableEnergy);
-		} else if (builderCount < 1 && this.room.getConstructionSites().length > 0) {
-			this.buildBuilder(availableEnergy);
+		
 		/*} else if (fixers.length < 1) {
 			this.buildFixer(availableEnergy);*/
 		//} else if (Game.needSpawnBuilders() && Game.spawnBuilderCount() < 3) {
