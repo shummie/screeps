@@ -5,6 +5,7 @@ require('room');
 require('structure');
 require('room-position');
 require('structure-manager');
+var enhancedGame = require('game');
 
 
 // Any modules that you use that modify the game's prototypes should be require'd
@@ -23,6 +24,8 @@ module.exports.loop = function () {
 	            delete Memory.creeps[name];
 	        }
 	    }
+
+	    Object.assign(Game, enhancedGame);
 
 		Object.keys(Game.rooms).forEach(roomName => {
 	        Game.rooms[roomName].work();
