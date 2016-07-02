@@ -33,7 +33,7 @@ SpawnBuilder.prototype.performRole = function() {
 		this.takeEnergyFrom(target);
 	} else if (this.memory.task === "build") {
 		if (this.memory.target) {
-			this.moveToAndBuild(target);
+			this.moveToAndBuild(Game.getObjectById(this.memory.target));
 		} else {
 			// acquire the construction site
 			// First, get a list of all rooms that don't have a STRUCTURE_SPAWN in it
