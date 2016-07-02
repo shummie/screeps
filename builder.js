@@ -12,10 +12,14 @@ Builder.prototype.performRole = function() {
 	} else if (this.carry.energy === 0 || this.memory.task === "stockup") {
 		this.memory.target = null;
 		this.memory.task = "stockup";
-		
-		if (this.room.getStructuresWithEnergyPickup()) {
+
+		if (this.room.droppedControllerEnergy()) {
+        	this.takeEnergyFrom(this.room.droppedControllerEnergy());
+		} else if (this.room.getStructuresWithEnergyPickup()) {
 			const closestStruct = this.pos.findClosestByRange(this.room.getStructuresWithEnergyPickup());
-			this.takeEnergyFrom(closestStruct);
+			if (closestStruct != null) {
+				this.takeEnergyFrom(closestStruct);
+			}
 		}
 	}
 	
