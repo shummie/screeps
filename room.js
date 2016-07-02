@@ -312,15 +312,24 @@ Room.prototype.getStructuresWithEnergyStorageSpace = function() {
 }
 
 Room.prototype.getEnergyThatNeedsPickedUp = function() {
-    //const targets = this.courierTargets();
-    //const dumpFlag = this.getControllerEnergyDropFlag();
+    const targets = this.courierTargets();
+    const dumpFlag = this.getControllerEnergyDropFlag();
 
     return this.getDroppedEnergy().filter(energy => {
-        //const targeted = targets.indexOf(energy.id) !== -1;
+        const targeted = targets.indexOf(energy.id) !== -1;
         const inRange = energy.pos.getRangeTo(this.getCenterPosition()) < 23;
-        //return !targeted && inRange && energy.pos.getRangeTo(dumpFlag) !== 0;
-        return inRange !== 0;
+        return !targeted && inRange && energy.pos.getRangeTo(dumpFlag) !== 0;
+        
     });
+}
+
+Room.prototype.courierTargets = function() {
+    return this.getCouriers().filter(creep => {
+      return creep.memory.role === 'courier' && !!creep.memory.target;
+    }).map(courier => {
+      return courier.memory.target;
+    });
+  }
 }
 
 Room.prototype.getCenterPosition = function() {
