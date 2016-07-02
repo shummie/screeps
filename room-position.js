@@ -1,5 +1,5 @@
 // modifies room-position
-
+var creepManager = require("creep-manager");
 
 RoomPosition.prototype.identifier = function() {
     return `${this.roomName}x${this.x}y${this.y}`;
@@ -63,4 +63,13 @@ RoomPosition.prototype.hasStructure = function() {
       }).length > 0;
     }
     return this._hasStructure;
+}
+
+RoomPosition.prototype.creep = function() {
+    const creep = this.lookFor(LOOK_CREEPS)[0];
+    // Found creep will not be enhanced.
+    if (creep) {
+      return creepManager.enhanceCreep(creep);
+    }
+    return creep;
 }
