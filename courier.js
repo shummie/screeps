@@ -24,7 +24,9 @@ Courier.prototype.performRole = function() {
 	if (this.memory.task === 'pickup') {
       	if (!this.memory.target) {
         	const target = this.room.getEnergySourcesThatNeedsStocked()[0];
-        	this.memory.target = target.id;
+        	if (target) {
+            this.memory.target = target.id;
+          }
       	}
 
       	if (this.memory.target) {
