@@ -389,3 +389,32 @@ Room.prototype.getMailmans = function() {
 Room.prototype.mailmanCount = function() {
     return this.getMailmans().length;
 }
+
+Room.prototype.getEnergyStockSources = function() {
+    if (!this._energyStockSources) {
+      const droppedControllerEnergy = this.droppedControllerEnergy();
+      this._energyStockSources = this.getEnergySourceStructures();
+      if (droppedControllerEnergy) {
+        this._energyStockSources.unshift(droppedControllerEnergy);
+      }
+    }
+
+    return this._energyStockSources;
+}
+
+Room.prototype.droppedControllerEnergy = function() {
+    if (!this._droppedControllerEnergy) {
+      const dumpFlag = this.getControllerEnergyDropFlag();
+      this._droppedControllerEnergy = this.find(FIND_DROPPED_ENERGY).filter(energy => {
+        return energy.pos.getRangeTo(dumpFlag) === 0;
+      })[0];
+    }
+
+    return this._droppedControllerEnergy;
+  }
+
+  Room.prototype.getEnergySourceStructures = function() {
+    return this.getMyStructures().filter(structure => {
+      return structure.energy;
+    });
+  }
