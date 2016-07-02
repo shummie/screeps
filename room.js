@@ -23,6 +23,108 @@ function yValueFromRoomName(roomName) {
 	return coordValue(roomName, /([NS]\d+)/);
 }
 
+Room.prototype.getConstructionSites = function() {
+    return this.find(FIND_CONSTRUCTION_SITES);
+}
+
+Room.prototype.getContainers = function () {
+    if (!this._containers) {
+        this._containers = this.getStructures().filter(structure => {
+            return structure.structureType === STRUCTURE_CONTAINER;
+        });
+    }
+    return this._containers;
+}
+
+Room.prototype.getControllerOwned = function() {
+    return this.controller && this.controller.my;
+}
+
+Room.prototype.getExits = function() {
+    if (!this._exits) {
+        this._exits = this.find(FIND_EXIT);
+    }
+    return this._exits;
+}
+
+Room.prototype.getHarvesters = function() {
+    if (!this._harvesters) {
+        this._harvesters = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'harvester';
+        });
+    }
+    return this._harvesters;
+}
+
+Room.prototype.getHostileCreeps = function() {
+    return this.find(FIND_HOSTILE_CREEPS);
+}
+
+Room.prototype.getLinks = function() {
+    if (!this._links) {
+        this._links = this.getMyStructures().filter(structure => {
+            return structure.structureType === STRUCTURE_LINK;
+        });
+    }
+    return this._links;
+}
+
+Room.prototype.getMineralSites = function() {
+    if (!this._minerals) {
+        this._minerals = this.find(FIND_MINERALS);
+    }
+    return this._minerals;
+}
+
+Room.prototype.getMyStructures = function() {
+    if (!this._myStructures) {
+        const structures = this.getStructures();
+        this._myStructures = structures.filter(structure => structure.my);
+    }
+
+    return this._myStructures;
+}
+
+Room.prototype.getSources = function() {
+    if (!this._sources) {
+        this._sources = this.find(FIND_SOURCES);
+    }
+    return this._sources;
+}
+
+Room.prototype.getSourcesNeedingHarvesters = function() {
+    return this.getSources().filter(source => {
+        return source.needsHarvesters();
+    });
+}
+
+Room.prototype.getStorage = function() {
+    if (!this._storageCalc) {
+        this._storageCalc = true;
+        this._storage = this.getMyStructures().filter(structure => {
+            return structure.structureType === STRUCTURE_STORAGE;
+        })[0];
+    }
+    return this._storage;
+}
+
+Room.prototype.getStructures = function() {
+    if (!this._structures) {
+        const structures = structureManager.structures();
+        this._structures = structures.filter(structure => structure.room === this);
+    }
+    return this._structures;
+}
+
+Room.prototype.getTowers = function() {
+    if (!this._towers) {
+        this._towers = this.getMyStructures().filter(structure => {
+            return structure.structureType === STRUCTURE_TOWER;
+        });
+    }
+    return this._towers;
+}
+
 Room.prototype.getUniqueExitPoints = function() {
 	if (!this._uniqueExitPoints) {
 		const exitCoords = this.getExits();
@@ -30,68 +132,30 @@ Room.prototype.getUniqueExitPoints = function() {
 			if (index === 0) {
 				return true;
 			}
-
 			const prevCoord = exitCoords[index - 1];
 			return !(Math.abs(coord.x - prevCoord.x) < 2) || !(Math.abs(coord.y - prevCoord.y) < 2);
 		});
 	}
-
 	return this._uniqueExitPoints;
 }
 
-Room.prototype.getExits = function() {
-    if (!this._exits) {
-      this._exits = this.find(FIND_EXIT);
+Room.prototype.harvesterCount = function() {
+    return this.getHarvesters().length;
+}
+
+Room.prototype.hasHostileCreeps = function() {
+    return this.getHostileCreeps().length > 0;
+}
+
+Room.prototype.myCreeps = function() {
+    if (!this._myCreeps) {
+        this._myCreeps = creepManager.creeps().filter(creep => creep.room === this);
     }
-
-    return this._exits;
-}
-
-Room.prototype.getConstructionSites = function() {
-    return this.find(FIND_CONSTRUCTION_SITES);
-}
-
-
-Room.prototype.getLinks = function() {
-    if (!this._links) {
-      this._links = this.getMyStructures().filter(structure => {
-        return structure.structureType === STRUCTURE_LINK;
-      });
-    }
-
-    return this._links;
-}
-
-Room.prototype.getControllerOwned = function() {
-    return this.controller && this.controller.my;
-}
-
-Room.prototype.getSources = function() {
-    if (!this._sources) {
-      this._sources = this.find(FIND_SOURCES);
-    }
-
-    return this._sources;
-}
-
-Room.prototype.getSourcesNeedingHarvesters = function() {
-    return this.getSources().filter(source => {
-	    return source.needsHarvesters();
-    });
+    return this._myCreeps;
 }
 
 Room.prototype.needsHarvesters = function() {
     return this.getSourcesNeedingHarvesters().length > 0;
-}
-
-
-Room.prototype.myCreeps = function() {
-    if (!this._myCreeps) {
-    	this._myCreeps = creepManager.creeps().filter(creep => creep.room === this);
-    }
-
-    return this._myCreeps;
-    
 }
 
 Room.prototype.work = function() {
@@ -103,81 +167,6 @@ Room.prototype.work = function() {
     this.myCreeps().forEach((creep) => {
       	creep.work();
     });
-}
-
-
-Room.prototype.hasHostileCreeps = function() {
-	return this.getHostileCreeps().length > 0;
-}
-
-Room.prototype.getHostileCreeps = function() {
-	return this.find(FIND_HOSTILE_CREEPS);
-}
-
-Room.prototype.getStorage = function() {
-	if (!this._storageCalc) {
-		this._storageCalc = true;
-		this._storage = this.getMyStructures().filter(structure => {
-			return structure.structureType === STRUCTURE_STORAGE;
-		})[0];
-	}
-	return this._storage;
-}
-
-Room.prototype.getTowers = function() {
-	if (!this._towers) {
-      	this._towers = this.getMyStructures().filter(structure => {
-        	return structure.structureType === STRUCTURE_TOWER;
-    	});
-    }
-    return this._towers;
-}
-
-Room.prototype.getContainers = function () {
-	if (!this._containers) {
-     	this._containers = this.getStructures().filter(structure => {
-        	return structure.structureType === STRUCTURE_CONTAINER;
-      	});
-    }
-    return this._containers;
-}
-
-Room.prototype.getMineralSites = function() {
-    if (!this._minerals) {
-    	this._minerals = this.find(FIND_MINERALS);
-    }
-    return this._minerals;
-}
-
-Room.prototype.getStructures = function() {
-    if (!this._structures) {
-    	const structures = structureManager.structures();
-      	this._structures = structures.filter(structure => structure.room === this);
-    }
-    return this._structures;
-}
-
-
-Room.prototype.getMyStructures = function() {
-    if (!this._myStructures) {
-      	const structures = this.getStructures();
-      	this._myStructures = structures.filter(structure => structure.my);
-    }
-
-    return this._myStructures;
-}
-
-Room.prototype.harvesterCount = function() {
-    return this.getHarvesters().length;
-}
-
-Room.prototype.getHarvesters = function() {
-    if (!this._harvesters) {
-    	this._harvesters = this.myCreeps().filter((creep) => {
-        	return creep.memory.role === 'harvester';
-      	});
-    }
-    return this._harvesters;
 }
 
 Room.prototype.haulerCount = function() {
