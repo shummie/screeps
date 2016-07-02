@@ -5,6 +5,7 @@ require('room');
 require('structure');
 require('room-position');
 require('structure-manager');
+require('stats');
 
 
 // Any modules that you use that modify the game's prototypes should be require'd
