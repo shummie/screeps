@@ -1,4 +1,5 @@
 var Builder = require('builder');
+var Claimer = require('claimer');
 //import Claimer from '../roles/Claimer';
 //import Courier from '../roles/Courier';
 var Courier = require('courier');
@@ -50,11 +51,13 @@ function enhanceCreep(creep) {
 		return new Upgrader(creep);
 	case 'minerHelper':
 		return new MinerHelper(creep);
-  case 'courier':
-    return new Courier(creep);
-  case 'mailman':
-    return new Mailman(creep);
-  }
+    case 'courier':
+        return new Courier(creep);
+    case 'mailman':
+        return new Mailman(creep);
+    case 'claimer':
+        return new Claimer(creep);
+    }
   //return new roleMap[creep.memory.role](creep);
   //  return new Harvester(creep);
 }
@@ -67,18 +70,18 @@ function convertCreeps() {
 }
 
 class CreepManager {
-  creeps() {
-    return convertCreeps();
-  }
+    creeps() {
+        return convertCreeps();
+    }
 
-  creepsWithRole(role) {
-    return this.creeps().filter(creep => creep.memory.role === role);
-  }
+    creepsWithRole(role) {
+        return this.creeps().filter(creep => creep.memory.role === role);
+    }
 
-  // Occasionally we find a creep that is not enhanced... so we enhance it.
-  enhanceCreep(creep) {
-    return enhanceCreep(creep);
-  }
+    // Occasionally we find a creep that is not enhanced... so we enhance it.
+    enhanceCreep(creep) {
+        return enhanceCreep(creep);
+    }
 }
 
 const creepManager = new CreepManager();
