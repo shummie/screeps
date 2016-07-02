@@ -62,9 +62,11 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
     }
     while (cost < availableEnergy && workParts < workPartsNeeded) {
       body.push(WORK);
+      body.push(MOVE);
       workParts++;
       cost = calculateCosts(body);
     }
+
 
     while (cost > availableEnergy) {
       body.pop();
