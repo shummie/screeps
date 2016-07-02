@@ -47,9 +47,30 @@ StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
 }
 
 StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
-	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
-	this.createCreep(body, undefined, {role: 'upgrader'});
+
+    const body = [MOVE, WORK, WORK, CARRY];
+    let workParts = 2;
+    let cost = bodyCosts.calculateCosts(body);
+    let workPartsNeeded = this.room.maxEnergyProducedPerTick() - this.room.upgraderWorkParts();
+    if (this.room.controller.level === 8) {
+      workPartsNeeded = Math.min(15, workPartsNeeded);
+    }
+    if (this.room.controller.pos.freeEdges() > 1) {
+      workPartsNeeded = Math.min(workPartsNeeded, this.room.maxEnergyProducedPerTick() / 2);
+    }
+    while (cost < availableEnergy && workParts < workPartsNeeded) {
+      body.push(WORK);
+      workParts++;
+      cost = bodyCosts.calculateCosts(body);
+    }
+
+    while (cost > availableEnergy) {
+      body.pop();
+      cost = bodyCosts.calculateCosts(body);
+    }
+
+    this.createCreep(body, undefined, { role: 'upgrader' });
+  
 }
 
 StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
@@ -80,6 +101,9 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
 
     this.createCreep(body, undefined, { role: 'mailman' });
   }
+
+
+
 
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
@@ -112,14 +136,12 @@ StructureSpawn.prototype.work = function() {
 			this.buildMailman(availableEnergy);
 		} else if (haulerCount < 3) {
 			this.buildHauler(availableEnergy);
-		} else if (upgraderCount < 4) {
+		} else if (this.room.needsUpgraders()) {
 			this.buildUpgrader(availableEnergy);
 		} else if (builderCount < 1 && this.room.getConstructionSites().length > 0) {
 			this.buildBuilder(availableEnergy);
 		/*} else if (fixers.length < 1) {
 			this.buildFixer(availableEnergy);*/
-		} else if (upgraderCount < 8) {
-			this.buildUpgrader(availableEnergy);
 		}
 	}
 }

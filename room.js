@@ -418,3 +418,30 @@ Room.prototype.droppedControllerEnergy = function() {
       return structure.energy;
     });
   }
+
+Room.prototype.upgraderWorkParts = function() {
+    if (!this._upgraderWorkParts) {
+      var parts = this.getUpgraders();
+      parts = parts.map(upgrader => {
+        return upgrader.body.filter(bodyPart => {
+          return bodyPart.type === WORK;
+        }).length;
+      });
+
+      if (parts.length) {
+        this._upgraderWorkParts = parts.reduce((a, b) => { return a + b; });
+      } else {
+        this._upgraderWorkParts = 0;
+      }
+    }
+
+    return this._upgraderWorkParts;
+  }
+
+Room.prototype.maxEnergyProducedPerTick = function() {
+    return this.sourceCount() * 10;
+  }
+
+Room.prototype.sourceCount = function() {
+    return this.getSources().length;
+  }
