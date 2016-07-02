@@ -155,10 +155,10 @@ StructureSpawn.prototype.work = function() {
 			this.buildHarvester(availableEnergy);
 		} else if (this.room.needsCouriers()) {
         	this.buildCourier(availableEnergy)
+        } else if (this.room.needsUpgraders()) {
+			this.buildUpgrader(availableEnergy);
         } else if (haulerCount < 1) {
 			this.buildHauler(availableEnergy);
-		} else if (this.room.needsUpgraders()) {
-			this.buildUpgrader(availableEnergy);
 		} else if (minerHelperCount < harvesterCount) {
 			this.buildMinerHelper(availableEnergy);		
 		} else if (this.room.needsHarvesters()) {
@@ -171,8 +171,8 @@ StructureSpawn.prototype.work = function() {
 			this.buildBuilder(availableEnergy);
 		/*} else if (fixers.length < 1) {
 			this.buildFixer(availableEnergy);*/
-		} else if (Game.needSpawnBuilders && Game.spawnBuilderCount() < 3) {
-			this.buildSpawnBuilder(availableEnergy);
+		//} else if (Game.needSpawnBuilders() && Game.spawnBuilderCount() < 3) {
+		//	this.buildSpawnBuilder(availableEnergy);
 		}
 	}
 }
