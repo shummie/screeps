@@ -24,9 +24,11 @@ Builder.prototype.performRole = function() {
 		if (constructionSites.length) {
 			const closestConstructionSite = this.pos.findClosestByRange(constructionSites);
 			this.moveToAndBuild(closestConstructionSite);
-		} else if (this.memory.target) {
+		} else if (this.memory.target !== null) {
 			const target = Game.getObjectById(this.memory.target);
-			if (target.hits < target.hitsMax) {
+			if (target === null) {
+				this.memory.target = null;
+			} else if (target.hits < target.hitsMax) {
 				this.moveToAndRepair(target);
 			} else {
 				this.memory.target = null;
