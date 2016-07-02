@@ -330,7 +330,7 @@ Room.prototype.courierTargets = function() {
       return courier.memory.target;
     });
   }
-}
+
 
 Room.prototype.getCenterPosition = function() {
     return new RoomPosition(25, 25, this.name);
