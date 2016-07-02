@@ -150,7 +150,7 @@ StructureSpawn.prototype.work = function() {
 	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
 	
-	if (availableEnergy >= 550) {
+	if (availableEnergy >= 300) {
 		if (harvesterCount < 1) {
 			this.buildHarvester(availableEnergy);
 		} else if (this.room.needsCouriers()) {
