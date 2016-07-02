@@ -30,7 +30,7 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
         cost = calculateCosts(body);
       	}
 		
-		console.log("Spawning a harvester in Room " + this.room.roomName);
+		console.log("Spawning a harvester in Room " + this.room.name);
 		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });
 
 	}
@@ -39,12 +39,14 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 StructureSpawn.prototype.buildHauler = function(availableEnergy) {
 	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
 	//const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	console.log("Spawning a hauler in Room " + this.room.name);
 	this.createCreep(body, undefined, { role: 'hauler' });
 }
 
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
 	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
 	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
+	console.log("Spawning a builder in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'builder'});
 }
 
@@ -73,14 +75,14 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
       cost = calculateCosts(body);
     }
 
-    console.log("Spawning an upgrader in Room " + this.room.roomName);
+    console.log("Spawning an upgrader in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'upgrader' });
   
 }
 
 StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
 	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
-	console.log("Spawning a minerHelper in Room " + this.room.roomName);
+	console.log("Spawning a minerHelper in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'minerHelper'});
 }
 
@@ -93,6 +95,7 @@ StructureSpawn.prototype.buildCourier = function(availableEnergy) {
       cost = calculateCosts(body);
     }
 
+	console.log("Spawning a courier in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'courier' });
   }
 
@@ -105,12 +108,13 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
       cost = calculateCosts(body);
     }
 
+    console.log("Spawning a mailman in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'mailman' });
   }
 
   StructureSpawn.prototype.buildClaimer = function(availableEnergy) {
   	const body = [MOVE,CLAIM];
-  	console.log("Spawning a claimer in Room " + this.room.roomName)
+  	console.log("Spawning a claimer in Room " + this.room.name)
   	this.createCreep(body, "Claimer", {role:'claimer'});
   }
 
