@@ -30,7 +30,9 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
         cost = calculateCosts(body);
       	}
 		
-		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });		
+		console.log("Spawning a harvester in Room " + this.room.roomName);
+		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });
+
 	}
 }
 
@@ -69,12 +71,14 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
       cost = bodyCosts.calculateCosts(body);
     }
 
+    console.log("Spawning an upgrader in Room " + this.room.roomName);
     this.createCreep(body, undefined, { role: 'upgrader' });
   
 }
 
 StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
 	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
+	console.log("Spawning a minerHelper in Room " + this.room.roomName);
 	this.createCreep(body, undefined, {role: 'minerHelper'});
 }
 
