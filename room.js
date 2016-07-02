@@ -23,6 +23,19 @@ function yValueFromRoomName(roomName) {
 	return coordValue(roomName, /([NS]\d+)/);
 }
 
+Room.prototype.claimerCount = function() {
+    return this.getClaimers().length;    
+}
+
+Room.prototype.getClaimers = function() {
+    if (!this._claimers) {
+        this._claimers = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'claimer';
+        });
+    }
+    return this._harvesters;
+}
+
 Room.prototype.getConstructionSites = function() {
     return this.find(FIND_CONSTRUCTION_SITES);
 }

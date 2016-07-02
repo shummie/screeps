@@ -106,6 +106,12 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
     this.createCreep(body, undefined, { role: 'mailman' });
   }
 
+  StructureSpawn.prototype.buildClaimer = function(availableEnergy) {
+  	const body = [MOVE,CLAIM];
+  	console.log("Spawning a claimer in Room " + this.room.roomName)
+  	this.createCreep(body, "Claimer", {role:'claimer'});
+  }
+
 
 
 
@@ -116,6 +122,7 @@ StructureSpawn.prototype.work = function() {
 	}
 	// Else. we're idle, should we spawn something?
 	const harvesterCount = this.room.harvesterCount();
+	const claimerCount = this.room.claimerCount();
 	const courierCount = this.room.courierCount();
 	const haulerCount = this.room.haulerCount();
 	const upgraderCount = this.room.upgraderCount();

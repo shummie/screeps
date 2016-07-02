@@ -9,6 +9,11 @@ class Claimer extends Base {
 Claimer.prototype.performRole = function() {
 	if (!this.room.getControllerOwned()) {
 		this.moveToAndClaimController(this.room.controller);
+	} else {
+		const claimFlag = Game.claimFlags()[0];
+		if (claimFlag) {
+			this.moveTo(claimFlag);
+		}
 	}
 }
 

@@ -10,6 +10,12 @@ var scoutFlags = undefined;
 
 const EnhancedGame = {};
 
+EnhancedGame.flagArray = function () {
+    return Object.keys(Game.flags).map(flagName => {
+    	return Game.flags[flagName];
+    });
+}
+
 EnhancedGame.myRooms = function() {
 	return Game.roomArray().filter(room => room.getControllerOwned());
 }
