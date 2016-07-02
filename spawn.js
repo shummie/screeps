@@ -46,6 +46,11 @@ StructureSpawn.prototype.buildHauler = function(availableEnergy) {
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
 	const body = [WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
 	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
+	cost = calculateCosts(body);
+		while (cost > availableEnergy) {
+        	body.pop();
+        cost = calculateCosts(body);
+      	}
 	console.log("Spawning a builder in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'builder'});
 }
