@@ -166,8 +166,8 @@ StructureSpawn.prototype.work = function() {
 		//	this.buildHauler(availableEnergy);
 		} else if (builderCount < 1 && this.room.getConstructionSites().length > 0) {
 			this.buildBuilder(availableEnergy);
-		} else if (minerHelperCount < harvesterCount) {
-			this.buildMinerHelper(availableEnergy);		
+		//} else if (minerHelperCount < harvesterCount) {
+		//	this.buildMinerHelper(availableEnergy);		
 		} else if (this.room.needsHarvesters()) {
 			this.buildHarvester(availableEnergy);
 		} else if (this.room.mailmanCount() < 2) {
