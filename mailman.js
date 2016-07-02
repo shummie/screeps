@@ -21,7 +21,7 @@ Mailman.prototype.performRole = function() {
             this.deliverEnergyTo(target);
         }
     } else {
-        const closestEnergySource = this.pos.findClosestByRange(this.room.getEnergyStockSources());
+        const closestEnergySource = this.pos.findClosestByRange(this.room.getStructuresWithEnergyPickup());
         if (closestEnergySource) {
             this.takeEnergyFrom(closestEnergySource);
         }
