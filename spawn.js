@@ -15,7 +15,11 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
 	if (closestSource) {
 		const sourceId = closestSource.id;
 		// TODO: Automate the building process. For now, let's keep it simple:
-		const body = [WORK,WORK,CARRY,MOVE,CARRY,MOVE,WORK,WORK,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,WORK,MOVE];
+		//const body = [WORK,WORK,CARRY,MOVE,MOVE,CARRY,MOVE,WORK,WORK,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,WORK,MOVE];
+        // Base 300 energy gives [WORK,CARRY,CARRY,MOVE,MOVE], allowing for basic energy.
+        // Afterwards, we give 1 move for every 2 work so that we can move at half speed to our target.
+        // Then later, we add carry modules to prevent despawning of energy.
+        const body = [WORK,CARRY,MOVE,CARRY,MOVE,WORK,WORK,WORK,MOVE,WORK,WORK,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY];
 		//const body = [WORK,WORK,CARRY,MOVE];
 
 		// Each miner can empty a whole source by themselves.
@@ -29,28 +33,27 @@ StructureSpawn.prototype.buildHarvester = function(availableEnergy) {
         	body.pop();
         cost = calculateCosts(body);
       	}
-		
+
 		console.log("Spawning a harvester in Room " + this.room.name);
 		this.createCreep(body, undefined, { role: 'harvester', source: sourceId });
-
 	}
 }
 
-StructureSpawn.prototype.buildHauler = function(availableEnergy) {
-	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
-	//const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
-	console.log("Spawning a hauler in Room " + this.room.name);
-	this.createCreep(body, undefined, { role: 'hauler' });
-}
-
 StructureSpawn.prototype.buildBuilder = function(availableEnergy) {
-	const body = [WORK,WORK,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,MOVE,MOVE];
-	//const body = [WORK,CARRY,CARRY,MOVE,MOVE];
-	var cost = calculateCosts(body);
-		while (cost > availableEnergy) {
-        	body.pop();
-        cost = calculateCosts(body);
-      	}
+    const body = [MOVE,MOVE,WORK,CARRY];
+	//const body = [WORK,WORK,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,MOVE,MOVE];
+    let cost = calculateCosts(body);
+
+    while (cost < availableEnergy) {
+        body.push(MOVE);
+        body.push(CARRY);
+        body.push(WORK);
+        cost += 200;
+    }
+	while (cost > availableEnergy || body.length > 50) {
+    	body.pop();
+        cost = calculateCosts(body);     // We're only popping off move or carries.
+  	}
 	console.log("Spawning a builder in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'builder'});
 }
@@ -62,29 +65,25 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
     let cost = calculateCosts(body);
     let workPartsNeeded = this.room.maxEnergyProducedPerTick() - this.room.upgraderWorkParts();
     if (this.room.controller.level === 8) {
-      workPartsNeeded = Math.min(15, workPartsNeeded);
+        workPartsNeeded = Math.min(15, workPartsNeeded);
     }
     if (this.room.controller.pos.freeEdges() > 1) {
-      workPartsNeeded = Math.min(workPartsNeeded, this.room.maxEnergyProducedPerTick() / 2);
+        workPartsNeeded = Math.min(workPartsNeeded, this.room.maxEnergyProducedPerTick() / 2);
     }
     while (cost < availableEnergy && workParts < workPartsNeeded) {
-      body.push(WORK);
-      body.push(CARRY);
-      body.push(MOVE);
-      body.push(MOVE);
-      workParts++;
-      cost = calculateCosts(body);
+        body.push(WORK);
+        body.push(CARRY);
+        body.push(MOVE);
+        workParts++;
+        cost = calculateCosts(body);
     }
-
-
     while (cost > availableEnergy) {
-      body.pop();
-      cost = calculateCosts(body);
+        body.pop();
+        cost = calculateCosts(body);
     }
 
     console.log("Spawning an upgrader in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'upgrader' });
-  
 }
 
 StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
@@ -94,22 +93,35 @@ StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
 }
 
 StructureSpawn.prototype.buildCourier = function(availableEnergy) {
-    const body = [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
-    var cost = calculateCosts(body);
-    
-    while (cost > availableEnergy) {
-      body.pop();
-      cost = calculateCosts(body);
+    const body = [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY];
+	const maxCarryParts = this.room.getStorage() && this.room.getLinks().length > 1 ? 10 : 100;
+    // if we have a storage, and we have a link, then we want 10 max carry parts, otherwise, cap at 100
+    let carryParts = 3;
+    let cost = calculateCosts(body);
+    while (cost < availableEnergy && carryParts < maxCarryParts) {
+        body.push(MOVE);
+        body.push(CARRY);
+        carryParts++;
+        cost += 100;
     }
-
-	console.log("Spawning a courier in Room " + this.room.name);
+	while (cost > availableEnergy) {
+    	body.pop();
+        cost -= 50;     // We're only popping off move or carries.
+  	}
+    console.log("Spawning a courier in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'courier' });
-  }
+}
 
 StructureSpawn.prototype.buildMailman = function(availableEnergy) {
-    const body = [MOVE, MOVE, CARRY, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
-    var cost = calculateCosts(body);
-    
+    const body = [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY];
+    //const body = [MOVE, MOVE, CARRY, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
+    let cost = calculateCosts(body);
+    while (cost < availableEnergy) {
+        body.push(MOVE);
+        body.push(CARRY);
+        cost += 100;
+    }
+
     while (cost > availableEnergy) {
       body.pop();
       cost = calculateCosts(body);
@@ -117,13 +129,13 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
 
     console.log("Spawning a mailman in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'mailman' });
-  }
+}
 
-  StructureSpawn.prototype.buildClaimer = function(availableEnergy) {
+StructureSpawn.prototype.buildClaimer = function(availableEnergy) {
   	const body = [MOVE,CLAIM];
   	console.log("Spawning a claimer in Room " + this.room.name)
   	this.createCreep(body, "Claimer", {role:'claimer'});
-  }
+}
 
 StructureSpawn.prototype.buildSpawnBuilder = function(availableEnergy) {
 	const body = [WORK,WORK,MOVE,MOVE,MOVE,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
@@ -146,39 +158,33 @@ StructureSpawn.prototype.work = function() {
 	const harvesterCount = this.room.harvesterCount();
 	const claimerCount = this.room.claimerCount();
 	const courierCount = this.room.courierCount();
-	const haulerCount = this.room.haulerCount();
 	const upgraderCount = this.room.upgraderCount();
 	const builderCount = this.room.builderCount();
-	const minerHelperCount = this.room.minerHelperCount();
+	//const minerHelperCount = this.room.minerHelperCount();
 	const mailmanCount = this.room.mailmanCount();
 	//const spawnBuilderCount = this.room.spawnBuilderCount();
 	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
-	
-	if (availableEnergy >= 300) {
+
+	if (availableEnergy >= 300 && availableEnergy < this.maxEnergy()) {
 		if (harvesterCount < 1) {
 			this.buildHarvester(availableEnergy);
 		} else if (this.room.needsCouriers()) {
         	this.buildCourier(availableEnergy)
         } else if (this.room.needsUpgraders()) {
 			this.buildUpgrader(availableEnergy);
-        //} else if (haulerCount < 1) {
-		//	this.buildHauler(availableEnergy);
-		} else if (builderCount < 3 && this.room.getConstructionSites().length > 0) {
-			this.buildBuilder(availableEnergy);
-		//} else if (minerHelperCount < harvesterCount) {
-		//	this.buildMinerHelper(availableEnergy);		
-		} else if (this.room.needsHarvesters()) {
-			this.buildHarvester(availableEnergy);
-		} else if (this.room.mailmanCount() < 2) {
+        }
+    } else if (availableEnergy === this.maxEnergy()) {
+        if (this.room.needsHarvesters()) {
+            this.buildHarvester(availableEnergy);
+        } else if (this.room.needsCouriers()) {
+            this.buildCourier(availableEnergy);
+        } else if (this.room.needsUpgraders()) {
+            this.buildUpgrader(availableEnergy);
+        } else if (this.room.mailmanCount() < 2 && this.maxEnergy() < 600) {
 			this.buildMailman(availableEnergy);
-		//} else if (haulerCount < 3) {
-		//	this.buildHauler(availableEnergy);
-		
-		/*} else if (fixers.length < 1) {
-			this.buildFixer(availableEnergy);*/
-		//} else if (Game.needSpawnBuilders() && Game.spawnBuilderCount() < 3) {
-		//	this.buildSpawnBuilder(availableEnergy);
+		} else if (builderCount < 2 && this.room.getConstructionSites().length > 0) {
+			this.buildBuilder(availableEnergy);
 		}
 	}
 }
