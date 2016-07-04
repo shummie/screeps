@@ -181,7 +181,8 @@ StructureSpawn.prototype.work = function() {
             this.buildCourier(availableEnergy);
         } else if (this.room.needsUpgraders()) {
             this.buildUpgrader(availableEnergy);
-        } else if (this.room.mailmanCount() < 2 && this.maxEnergy() < 600) {
+        // } else if (this.room.mailmanCount() < 2 && this.maxEnergy() < 600) {
+        } else if (this.room.mailmanCount() < 2) {
 			this.buildMailman(availableEnergy);
 		} else if (builderCount < 2 && this.room.getConstructionSites().length > 0) {
 			this.buildBuilder(availableEnergy);
