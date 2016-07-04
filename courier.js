@@ -29,6 +29,7 @@ Courier.prototype.performRole = function() {
 
 	if (!dumpTarget) {
 		// There are no spawns, Extensions or towers that need energy, so let's drop it off at the controller drop point
+        // console.log(this.name + " acquiring controller flag");
       	dumpTarget = this.room.getControllerEnergyDropFlag();
     }
 
@@ -36,7 +37,7 @@ Courier.prototype.performRole = function() {
       	if (!this.memory.target) {
 			// Pick up energy from the ground or harvesters
         	const target = this.room.getEnergySourcesThatNeedsStocked()[0];
-			this.memory.target = target ? target.id : ''
+			this.memory.target = target ? target.id : '';
         	/* TODO: Figure out why the below doesn't work. Is it because an array isn't always returned?
 			if (target) {
 				// Let's find the closest target.
@@ -63,6 +64,7 @@ Courier.prototype.performRole = function() {
         	this.deliverEnergyTo(dumpTarget);
       	}
     } else {
+        // console.log(this.name + " delivering to " + dumpTarget);
 		// this.memory.task === 'deliver'
       	this.deliverEnergyTo(dumpTarget);
     }
