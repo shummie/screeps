@@ -38,7 +38,7 @@ Courier.prototype.performRole = function() {
         	const target = this.room.getEnergySourcesThatNeedsStocked();
         	if (target) {
 				// Let's find the closest target.
-				const tar = this.pos.findClosestByRange(target)
+				const tar = this.pos.findClosestByRange(target);
             	this.memory.target = tar.id;
           	}
       	}
