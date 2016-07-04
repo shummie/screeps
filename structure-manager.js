@@ -6,7 +6,7 @@ import Rampart from '../structures/Rampart';
 var Spawn = require('spawn');
 var Tower = require('tower');
 var Link = require('link');
-
+var Wall = require('wall');
 
 function convertStructures() {
   const normalStructures = [];
