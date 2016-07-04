@@ -35,12 +35,16 @@ Courier.prototype.performRole = function() {
 	if (this.memory.task === 'pickup') {
       	if (!this.memory.target) {
 			// Pick up energy from the ground or harvesters
-        	const target = this.room.getEnergySourcesThatNeedsStocked();
-        	if (target) {
+        	const target = this.room.getEnergySourcesThatNeedsStocked()[0];
+			this.memory.target = target ? target.id : ''
+        	/* TODO: Figure out why the below doesn't work. Is it because an array isn't always returned?
+			if (target) {
 				// Let's find the closest target.
+
 				const tar = this.pos.findClosestByRange(target);
             	this.memory.target = tar.id;
           	}
+			*/
       	}
       	if (this.memory.target) {
 			// We have a target, let's move to it.
