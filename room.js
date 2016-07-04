@@ -464,6 +464,15 @@ Room.prototype.work = function() {
     this.myCreeps().forEach((creep) => {
       	creep.work();
     });
+
+    if (this.getControllerOwned()) {
+        // logic to place flags is expensive so let's run it every 10 ticks
+        if (Game.time % 10 === 0) {
+            this.placeFlags();
+            // this.placeStructures();
+        }
+    }
+
 }
 
 
