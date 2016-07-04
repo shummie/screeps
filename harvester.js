@@ -1,7 +1,5 @@
 var Base = require('base');
 
-// Harvester = {}; // Empty instance
-
 class Harvester extends Base {
     constructor(creep) {
         super(creep);
@@ -9,26 +7,33 @@ class Harvester extends Base {
 }
 
 Harvester.prototype.performRole = function() {
-
     if (this.carry.energy < this.carryCapacity || this.carry.energy === 0) {
+        // If we are not at capacity, or we don't have any energy carried right now.
+        // We were assigned a source when spawned, let's go there.
         const source = this.targetSource();
         this.moveToAndHarvest(source);
-    } else if (this.room.haulerCount() === 0 && this.getSpawn().availableEnergy() < 300) {
+    } else if (this.room.courierCount() === 0 && this.getSpawn().availableEnergy() < 300) {
+        // If we do not have any couriers to deliver energy for us, AND the spawn has room for more energy, let's deliver the energy ourselves.
         this.deliverEnergyTo(this.getSpawn());
     } else {
-        const storage = this.room.getStorage();
+        // Otherwise, we either have couriers that can take energy from us, or the spawn already has 300 energy.
+        //const storage = this.room.getStorage();
         const towers = this.room.getTowers().filter (tower => !tower.isFull());
         const closestTower = this.pos.findClosestByRange(towers);
-        const links = this.room.getLinks();
-        const closestLink = this.pos.findClosestByRange(links);
+        //const links = this.room.getLinks();
+        //const closestLink = this.pos.findClosestByRange(links);
         const energyStorage = this.room.getStructuresWithEnergyStorageSpace();
-        
-        // For now, just deliver to the closest container
+        // energyStorage will find the closest Storage, Link, or Container.
+
         if (energyStorage) {
-            this.deliverEnergyTo(this.pos.findClosestByRange(energyStorage));
-        } else if (storage) {
-            this.deliverEnergyTo(storage);
+            // If we have somewhere to store the energy AND we are next to the storage, then drop it off.
+            const energyStorageTarget = this.pos.findClosestByRange(energyStorage);
+            const rangeToTarget = this.pos.getRangeTo(energyStorageTarget);
+            if (rangeToTarget <= 2) {
+                this.deliverEnergyTo(energyStorageTarget);
+            }
         } else {
+            // We aren't next to any close energy storage locations, so just drop off the energy and let a courier pick it up.
             this.drop(RESOURCE_ENERGY);
         }
     }
