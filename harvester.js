@@ -32,7 +32,7 @@ Harvester.prototype.performRole = function() {
             if (rangeToTarget <= 2) {
                 this.deliverEnergyTo(energyStorageTarget);
             }
-        else if (links.length && this.pos.getRangeTo(closestLink) <= 3 && !closestLink.isFull()) {
+        } else if (links.length && this.pos.getRangeTo(closestLink) <= 3 && !closestLink.isFull()) {
             this.deliverEnergyTo(closestLink)
         } else {
             // We aren't next to any close energy storage locations, so just drop off the energy and let a courier pick it up.
