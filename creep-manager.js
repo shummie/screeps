@@ -5,7 +5,6 @@ var Claimer = require('claimer');
 var Courier = require('courier');
 var Harvester = require('harvester');
 var Mailman = require('mailman');
-var Hauler = require('hauler');
 var MinerHelper = require('miner-helper');
 //import RemoteHarvester from '../roles/RemoteHarvester';
 //import Reserver from '../roles/Reserver';
@@ -40,11 +39,7 @@ function enhanceCreep(creep) {
     case 'miner':
         creep.memory.role = "harvester";
 		return new Harvester(creep);
-	case 'hauler':
-    case 'refiller':
-        creep.memory.role = "hauler";
-		return new Hauler(creep);
-	case 'builder': 
+	case 'builder':
     case 'fixer':
         creep.memory.role = 'builder';
 		return new Builder(creep);
