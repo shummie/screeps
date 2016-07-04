@@ -376,7 +376,7 @@ Room.prototype.needRoadWorkers = function() {
 Room.prototype.needsUpgraders = function() {
     const hasFreeEdges = this.upgraderCount() < this.controller.pos.freeEdges();
 	//return hasFreeEdges & !!this.droppedControllerEnergy() && this.upgraderWorkParts() < this.maxEnergyProducedPerTick();
-	return hasFreeEdges && this.upgraderWorkParts() < this.maxEnergyProducedPerTick();
+	return hasFreeEdges && this.upgraderWorkParts() < this.maxEnergyProducedPerTick() && !this.getConstructionSites().length;
 }
 
 Room.prototype.placeConstructionFlags = function() {
