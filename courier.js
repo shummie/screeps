@@ -1,6 +1,8 @@
 /* Courier role:
-*
-
+* A courier takes energy located on the ground or from harvesters and delivers them to
+* Spawns, extensions, towers, or to the designated dump flags.
+* TODO: Should this also deliver to storages/containers instead of the dump flag?
+* TODO: Should this also look for other creeps to deliver to?
 */
 
 var Base = require('base');
@@ -10,7 +12,6 @@ class Courier extends Base {
 		super(creep);
 	}
 }
-
 
 Courier.prototype.performRole = function() {
 	// Look for structures that need energy delivered to it
@@ -41,7 +42,6 @@ Courier.prototype.performRole = function() {
             	this.memory.target = tar.id;
           	}
       	}
-
       	if (this.memory.target) {
 			// We have a target, let's move to it.
         	const target = Game.getObjectById(this.memory.target);
