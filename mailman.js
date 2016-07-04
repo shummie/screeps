@@ -2,7 +2,7 @@ var Base = require('base');
 
 class Mailman extends Base {
   constructor(creep) {
-    super(creep); 
+    super(creep);
   }
 }
 
@@ -21,7 +21,8 @@ Mailman.prototype.performRole = function() {
             this.deliverEnergyTo(target);
         }
     } else {
-        const closestEnergySource = this.pos.findClosestByRange(this.room.getStructuresWithEnergyPickup());
+        // Get energy from the floor, containers, storages, or link.
+        const closestEnergySource = this.pos.findClosestByRange(this.room.getEnergyStockSources());
         if (closestEnergySource) {
             this.takeEnergyFrom(closestEnergySource);
         }

@@ -636,9 +636,12 @@ Room.prototype.mailmanCount = function() {
 }
 
 Room.prototype.getEnergyStockSources = function() {
+	// Looks for energy stock sources
+	// Looks for dropped energy, storages, containers, or link.
     if (!this._energyStockSources) {
       	const droppedControllerEnergy = this.droppedControllerEnergy();
-      	this._energyStockSources = this.getEnergySourceStructures();
+      	//this._energyStockSources = this.getEnergySourceStructures();
+		this._energyStockSources = this.getStructuresWithEnergyPickup();
       	if (droppedControllerEnergy) {
         	this._energyStockSources.unshift(droppedControllerEnergy);
       	}
