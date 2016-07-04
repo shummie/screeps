@@ -143,7 +143,7 @@ Room.prototype.getHarvesters = function() {
 Room.prototype.getHaulers = function() {
     if (!this._haulers) {
     	this._haulers = this.myCreeps().filter((creep) => {
-        	return creep.memory.role = == 'hauler';
+        	return creep.memory.role === 'hauler';
       	});
     }
     return this._haulers;
@@ -546,8 +546,8 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
     return [];
 }
 
-
 Room.prototype.getStructuresWithEnergyPickup = function() {
+	// Look for any storages, links, or containers in this room.
 	if (!this._structuresWithEnergyPickup) {
 		this._structuresWithEnergyPickup = this.getStructures().filter (structure => {return (structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_STORAGE || structure.structureType === STRUCTURE_LINK) && structure.store[RESOURCE_ENERGY] > 0});
 	}
