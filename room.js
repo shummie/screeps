@@ -39,6 +39,18 @@ Room.prototype.claimerCount = function() {
     return this.getClaimers().length;
 }
 
+Room.prototype.courierCount = function() {
+    return this.getCouriers().length;
+}
+
+Room.prototype.courierTargets = function() {
+    return this.getCouriers().filter(creep => {
+        return creep.memory.role === 'courier' && !!creep.memory.target;
+    }).map(courier => {
+        return courier.memory.target;
+    });
+}
+
 Room.prototype.createBuildFlag = function(pos, structureType) {
 	this.placeFlag(pos, `BUILD_${structureType}`);
 }
@@ -78,6 +90,10 @@ Room.prototype.getBuilders = function() {
     return this._builders;
 }
 
+Room.prototype.getCenterPosition = function() {
+    return new RoomPosition(25, 25, this.name);
+}
+
 Room.prototype.getClaimers = function() {
     if (!this._claimers) {
         this._claimers = this.myCreeps().filter((creep) => {
@@ -100,6 +116,12 @@ Room.prototype.getContainers = function () {
     return this._containers;
 }
 
+Room.prototype.getControllerEnergyDropFlag = function() {
+    return this.getFlags().filter(flag => {
+        return flag.name.indexOf('CONTROLLER_ENERGY_DROP') !== -1;
+    })[0];
+}
+
 Room.prototype.getControllerLink = function() {
 	return this.getLinks().filter(link => {
 		return link.isControllerLink();
@@ -107,6 +129,15 @@ Room.prototype.getControllerLink = function() {
 }
 Room.prototype.getControllerOwned = function() {
     return this.controller && this.controller.my;
+}
+
+Room.prototype.getCouriers = function() {
+    if (!this._couriers) {
+        this._couriers = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'courier';
+        });
+    }
+    return this._couriers;
 }
 
 Room.prototype.getDamagedRoads = function() {
@@ -124,11 +155,23 @@ Room.prototype.getDismantledFlag = function () {
 	})[0];
 }
 
+Room.prototype.getDroppedEnergy = function() {
+    return this.find(FIND_DROPPED_ENERGY).sort((energyA, energyB) => {
+        return energyB.energy - energyA.energy;
+    });
+}
+
 Room.prototype.getExits = function() {
     if (!this._exits) {
         this._exits = this.find(FIND_EXIT);
     }
     return this._exits;
+}
+
+Room.prototype.getFlags = function(){
+    return this.find(FIND_FLAGS).filter(flag => {
+        return flag.room === this;
+    });
 }
 
 Room.prototype.getHarvesters = function() {
@@ -162,11 +205,29 @@ Room.prototype.getLinks = function() {
     return this._links;
 }
 
+Room.prototype.getMailmans = function() {
+    if (!this._mailmans) {
+        this._mailmans = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'mailman';
+        });
+    }
+    return this._mailmans;
+}
+
 Room.prototype.getMineralSites = function() {
     if (!this._minerals) {
         this._minerals = this.find(FIND_MINERALS);
     }
     return this._minerals;
+}
+
+Room.prototype.getMinerHelpers = function() {
+    if (!this._minerHelpers) {
+        this._minerHelpers = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'minerHelper';
+        });
+    }
+    return this._minerHelpers;
 }
 
 Room.prototype.getMyStructures = function() {
@@ -328,6 +389,18 @@ Room.prototype.haulerCount = function() {
     return this.getHaulers().length;
 }
 
+Room.prototype.maxEnergyProducedPerTick = function() {
+    return this.sourceCount() * 10;
+}
+
+Room.prototype.mailmanCount = function() {
+    return this.getMailmans().length;
+}
+
+Room.prototype.minerHelperCount = function() {
+    return this.getMinerHelpers().length;
+}
+
 Room.prototype.myCreeps = function() {
     if (!this._myCreeps) {
         this._myCreeps = creepManager.creeps().filter(creep => creep.room === this);
@@ -436,6 +509,10 @@ Room.prototype.roadWorkerCount = function() {
 	return this.getRoadWorkers().length;
 }
 
+Room.prototype.sourceCount = function() {
+    return this.getSources().length;
+}
+
 Room.prototype.upgraderCount = function() {
     return this.getUpgraders().length;
 }
@@ -479,37 +556,6 @@ Room.prototype.work = function() {
 
 
 
-
-
-
-
-
-
-Room.prototype.minerHelperCount = function() {
-    return this.getMinerHelpers().length;
-}
-
-Room.prototype.getMinerHelpers = function() {
-    if (!this._minerHelpers) {
-    	this._minerHelpers = this.myCreeps().filter((creep) => {
-        	return creep.memory.role === 'minerHelper';
-      	});
-    }
-    return this._minerHelpers;
-}
-
-Room.prototype.getControllerEnergyDropFlag = function() {
-    return this.getFlags().filter(flag => {
-        return flag.name.indexOf('CONTROLLER_ENERGY_DROP') !== -1;
-    })[0];
-}
-
-Room.prototype.getFlags = function(){
-    return this.find(FIND_FLAGS).filter(flag => {
-        return flag.room === this;
-    });
-}
-
 Room.prototype.getStructuresNeedingEnergyDelivery = function() {
 	// Returns a list of all structures that need energy:
 	// Spawn, Spawn Extensions, Towers
@@ -552,7 +598,6 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
         });
     }
     */
-
     return [];
 }
 
@@ -581,25 +626,6 @@ Room.prototype.getEnergyThatNeedsPickedUp = function() {
     });
 }
 
-Room.prototype.courierTargets = function() {
-    return this.getCouriers().filter(creep => {
-      	return creep.memory.role === 'courier' && !!creep.memory.target;
-    }).map(courier => {
-      	return courier.memory.target;
-    });
- }
-
-
-Room.prototype.getCenterPosition = function() {
-    return new RoomPosition(25, 25, this.name);
-}
-
-Room.prototype.getDroppedEnergy = function() {
-    return this.find(FIND_DROPPED_ENERGY).sort((energyA, energyB) => {
-        return energyB.energy - energyA.energy;
-    });
-}
-
 Room.prototype.getCreepsThatNeedOffloading = function() {
 	// This will return a list of harvesters that have energy to offload.
     const targets = this.courierTargets();
@@ -607,42 +633,6 @@ Room.prototype.getCreepsThatNeedOffloading = function() {
       	const targeted = targets.indexOf(harvester.id) !== -1;
       	return harvester.needsOffloaded() && !targeted;
     });
-}
-
-Room.prototype.haulerTargets = function() {
-    return this.getHaulers().filter(creep => {
-      return creep.memory.role === 'hauler' && !!creep.memory.target;
-    }).map(hauler => {
-      return hauler.memory.target;
-    });
-}
-
-
-
-Room.prototype.getCouriers = function() {
-    if (!this._couriers) {
-        this._couriers = this.myCreeps().filter((creep) => {
-            return creep.memory.role === 'courier';
-        });
-    }
-    return this._couriers;
-}
-
-Room.prototype.courierCount = function() {
-    return this.getCouriers().length;
-}
-
-Room.prototype.getMailmans = function() {
-    if (!this._mailmans) {
-        this._mailmans = this.myCreeps().filter((creep) => {
-            return creep.memory.role === 'mailman';
-        });
-    }
-    return this._mailmans;
-}
-
-Room.prototype.mailmanCount = function() {
-    return this.getMailmans().length;
 }
 
 Room.prototype.getEnergyStockSources = function() {
@@ -663,30 +653,4 @@ Room.prototype.getEnergySourceStructures = function() {
     return this.getMyStructures().filter(structure => {
       	return structure.energy;
     });
-}
-
-Room.prototype.upgraderWorkParts = function() {
-    if (!this._upgraderWorkParts) {
-    	var parts = this.getUpgraders();
-      	parts = parts.map(upgrader => {
-        	return upgrader.body.filter(bodyPart => {
-          		return bodyPart.type === WORK;
-        	}).length;
-      	});
-
-      	if (parts.length) {
-        	this._upgraderWorkParts = parts.reduce((a, b) => { return a + b; });
-      	} else {
-        	this._upgraderWorkParts = 0;
-      	}
-    }
-    return this._upgraderWorkParts;
-}
-
-Room.prototype.maxEnergyProducedPerTick = function() {
-    return this.sourceCount() * 10;
-}
-
-Room.prototype.sourceCount = function() {
-    return this.getSources().length;
 }
