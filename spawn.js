@@ -178,7 +178,7 @@ StructureSpawn.prototype.work = function() {
     } else if (availableEnergy >= Math.max(300, this.maxEnergy() / 2)) {
         if (this.room.needsHarvesters()) {
             this.buildHarvester(availableEnergy);
-        } else if (courierCount < 4) {
+        } else if (courierCount < 2*harvesterCount) {
             this.buildCourier(availableEnergy);
         } else if (this.room.needsUpgraders()) {
             this.buildUpgrader(availableEnergy);
