@@ -175,7 +175,7 @@ StructureSpawn.prototype.work = function() {
         } else if (this.room.needsUpgraders()) {
 			this.buildUpgrader(availableEnergy);
         }
-    } else if (availableEnergy === this.maxEnergy() / 2) {
+    } else if (availableEnergy >= this.maxEnergy() / 2) {
         if (this.room.needsHarvesters()) {
             this.buildHarvester(availableEnergy);
         } else if (courierCount < 4) {
