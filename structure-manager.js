@@ -1,24 +1,12 @@
 /*
 import Extension from '../structures/Extension';
-import Link from '../structures/Link';
-import Spawn from '../structures/Spawn';
-import Tower from '../structures/Tower';
 import Wall from '../structures/Wall';
 import Rampart from '../structures/Rampart';
 */
 var Spawn = require('spawn');
 var Tower = require('tower');
+var Link = require('link');
 
-/*
-const structureMap = {
-  [STRUCTURE_EXTENSION]: Extension,
-  [STRUCTURE_LINK]: Link,
-  [STRUCTURE_RAMPART]: Rampart,
-  [STRUCTURE_SPAWN]: Spawn,
-  [STRUCTURE_TOWER]: Tower,
-  [STRUCTURE_WALL]: Wall,
-};
-*/
 
 function convertStructures() {
   const normalStructures = [];

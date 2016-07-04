@@ -15,24 +15,6 @@ var SpawnBuilder = require('spawnbuilder');
 var Upgrader = require('upgrader');
 //import Wanderer from '../roles/Wanderer';
 
-/*
-const roleMap = {
-//  builder: Builder,
-//  claimer: Claimer,
-//  courier: Courier,
-    harvester: Harvester,
-//  mailman: Mailman,
-//  remoteharvester: RemoteHarvester,
-//  reserver: Reserver,
-//  roadworker: RoadWorker,
-//  scout: Scout,
-//  scoutharvester: ScoutHarvester,
-//  upgrader: Upgrader,
-//  wanderer: Wanderer,
-};
-*/
-
-
 function enhanceCreep(creep) {
   switch(creep.memory.role) {
     case 'harvester':
@@ -56,8 +38,6 @@ function enhanceCreep(creep) {
     case 'spawnBuilder':
         return new SpawnBuilder(creep);
     }
-  //return new roleMap[creep.memory.role](creep);
-  //  return new Harvester(creep);
 }
 
 function convertCreeps() {
@@ -83,5 +63,4 @@ class CreepManager {
 }
 
 const creepManager = new CreepManager();
-
 module.exports = creepManager;

@@ -10,10 +10,6 @@ Structure.prototype.work = function() {
 	}
 }
 
-Structure.prototype.isControllerLink = function() {
-	return this.structureType === STRUCTURE_LINK && this.pos.getRangeTo(this.room.controller) < 5;
-}
-
 Structure.prototype.isFull = function() {
 	if (this.energyCapacity) {
 		return this.energy === this.energyCapacity;

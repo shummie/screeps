@@ -550,7 +550,7 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
 Room.prototype.getStructuresWithEnergyPickup = function() {
 	// Look for any storages, links, or containers in this room.
 	if (!this._structuresWithEnergyPickup) {
-		this._structuresWithEnergyPickup = this.getStructures().filter (structure => {return (structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_STORAGE || structure.structureType === STRUCTURE_LINK) && structure.store[RESOURCE_ENERGY] > 0});
+		this._structuresWithEnergyPickup = this.getStructures().filter ((structure => {return ((structure.structureType === STRUCTURE_LINK && structure.energy > 0) || ((structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_STORAGE) && structure.store[RESOURCE_ENERGY] > 0))}));
 	}
 	return this._structuresWithEnergyPickup;
 }
