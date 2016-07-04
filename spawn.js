@@ -170,15 +170,15 @@ StructureSpawn.prototype.work = function() {
 		if (harvesterCount < 1) {
 			this.buildHarvester(availableEnergy);
 		//} else if (this.room.needsCouriers()) {
-		} else if (courierCount < 4) {
+		} else if (courierCount < 1) {
         	this.buildCourier(availableEnergy)
         } else if (this.room.needsUpgraders()) {
 			this.buildUpgrader(availableEnergy);
         }
-    } else if (availableEnergy === this.maxEnergy()) {
+    } else if (availableEnergy === this.maxEnergy() / 2) {
         if (this.room.needsHarvesters()) {
             this.buildHarvester(availableEnergy);
-        } else if (this.room.needsCouriers()) {
+        } else if (courierCount < 4) {
             this.buildCourier(availableEnergy);
         } else if (this.room.needsUpgraders()) {
             this.buildUpgrader(availableEnergy);
