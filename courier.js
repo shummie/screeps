@@ -30,7 +30,13 @@ Courier.prototype.performRole = function() {
 	if (!dumpTarget) {
 		// There are no spawns, Extensions or towers that need energy, so let's drop it off at the controller drop point
         // console.log(this.name + " acquiring controller flag");
-      	dumpTarget = this.room.getControllerEnergyDropFlag();
+        // If no target, drop it off at storage.
+        const storage = this.room.getStorage();
+        if (storage) {
+            dumpTarget = storage;
+        } else {
+            dumpTarget = this.room.getControllerEnergyDropFlag();
+        }
     }
 
 	if (this.memory.task === 'pickup') {
