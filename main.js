@@ -1,6 +1,7 @@
 
 require('creep-manager');
 require('source');
+require('controller');
 require('room');
 require('structure');
 require('room-position');

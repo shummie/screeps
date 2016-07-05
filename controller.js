@@ -11,5 +11,5 @@ StructureController.prototype.placeFlags = function() {
         return positionADistance - positionBDistance;
     });
     this.room.createBuildFlag(buildAblePositions[0], STRUCTURE_LINK);
-  },
-}
+  }
+
