@@ -188,6 +188,9 @@ StructureSpawn.prototype.work = function() {
 		//} else if (builderCount < 2 && this.room.getConstructionSites().length > 0) {
 		} else if (builderCount < 2) {
 			this.buildBuilder(availableEnergy);
+		} else if (this.room.controller.ticksToDowngrade <= 3000) {
+			// Something has gone wrong, make sure we upgrade this controller
+			this.buildUpgrader(availableEnergy);
 		}
 	}
 }
