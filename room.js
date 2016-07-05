@@ -453,7 +453,8 @@ Room.prototype.needsUpgraders = function() {
 }
 
 Room.prototype.placeConstructionFlags = function() {
-	this.placeWallFlags();
+    // Manually build walls for now.
+	// this.placeWallFlags();
 }
 
 Room.prototype.placeContainerFlag = function() {

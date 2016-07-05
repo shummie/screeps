@@ -10,6 +10,7 @@ StructureController.prototype.placeFlags = function() {
         const positionBDistance = positionB.getRangeTo(dropSpot);
         return positionADistance - positionBDistance;
     });
-    this.room.createBuildFlag(buildAblePositions[0], STRUCTURE_LINK);
+    // manually build links for now
+    //this.room.createBuildFlag(buildAblePositions[0], STRUCTURE_LINK);
   }
 
