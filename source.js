@@ -19,3 +19,7 @@ Source.prototype.needsHarvesters = function() {
 Source.prototype.freeEdges = function() {
     return this.pos.freeEdges();
 }
+
+Source.prototype.placeFlags = function() {
+    // do nothing for now.
+}
