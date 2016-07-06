@@ -149,6 +149,36 @@ StructureSpawn.prototype.buildSpawnBuilder = function(availableEnergy) {
     this.createCreep(body, undefined, { role: 'spawnBuilder' });
 }
 
+StructureSpawn.prototype.buildMineralHarvester = function(availableEnergy) {
+	const sources = this.room.getMineralSites();
+    
+	if (sources) {
+		const sourceId = sources.id;
+		// TODO: Automate the building process. For now, let's keep it simple:
+		//const body = [WORK,WORK,CARRY,MOVE,MOVE,CARRY,MOVE,WORK,WORK,CARRY,CARRY,MOVE,CARRY,CARRY,MOVE,WORK,CARRY,MOVE,CARRY,WORK,MOVE];
+        // Base 300 energy gives [WORK,CARRY,CARRY,MOVE,MOVE], allowing for basic energy.
+        // Afterwards, we give 1 move for every 2 work so that we can move at half speed to our target.
+        // Then later, we add carry modules to prevent despawning of energy.
+        const body = [WORK,CARRY,MOVE,CARRY,MOVE,WORK,WORK,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY];
+		//const body = [WORK,WORK,CARRY,MOVE];
+
+		// Each miner can empty a whole source by themselves.
+		// H & O have twice the available minerals as the others.
+		// Minerals Available = 70-140k & 140k-280k
+		// Sources regenerate every 50,000 game ticks
+		// Mining at a constant rate of 3-6 / tick will fully drain 1 source.
+		// This can be accomplished with 1 miner with 3 work modules (assuming no travel time)
+
+		var cost = calculateCosts(body);
+		while (cost > availableEnergy) {
+        	body.pop();
+        cost = calculateCosts(body);
+      	}
+
+		console.log("Spawning a mineral harvester in Room " + this.room.name);
+		this.createCreep(body, undefined, { role: 'mineralHarvester', source: sourceId });	
+}
+
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
 		// We're busy, don't do anything else.
