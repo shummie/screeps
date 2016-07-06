@@ -177,6 +177,7 @@ StructureSpawn.prototype.buildMineralHarvester = function(availableEnergy) {
 
 		console.log("Spawning a mineral harvester in Room " + this.room.name);
 		this.createCreep(body, undefined, { role: 'mineralHarvester', source: sourceId });	
+	}
 }
 
 StructureSpawn.prototype.work = function() {
