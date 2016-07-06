@@ -214,6 +214,15 @@ Room.prototype.getMailmans = function() {
     return this._mailmans;
 }
 
+Room.prototype.getMinerHelpers = function() {
+    if (!this._mineralHarvesters) {
+        this._mineralHarvesters = this.myCreeps().filter((creep) => {
+            return creep.memory.role === 'mineralHarvester';
+        });
+    }
+    return this._mineralHarvesters;
+}
+
 Room.prototype.getMineralSites = function() {
     if (!this._minerals) {
         this._minerals = this.find(FIND_MINERALS);
@@ -363,6 +372,21 @@ Room.prototype.hasEastExit = function() {
 	return !!this.getUniqueExitPoints().find(exitPos => exitPos.x === 49);
 }
 
+Room.prototype.hasExtractor = function() {
+    if (!this._hasExtractor) {
+        this._hasExtractor = this.getMyStructures().filter(structure => {
+            return structure.structureType === STRUCTURE_EXTRACTOR;
+        })
+    }
+    if (this._hasExtractor.length > 0) {
+        this._hasExtractor = true;
+    }
+    else {
+        this._hasExtractor = false;
+    }
+    return this._hasExtractor;
+}
+
 Room.prototype.hasHostileCreeps = function() {
     return this.getHostileCreeps().length > 0;
 }
@@ -395,6 +419,10 @@ Room.prototype.maxEnergyProducedPerTick = function() {
 
 Room.prototype.mailmanCount = function() {
     return this.getMailmans().length;
+}
+
+Room.prototype.mineralHarvesterCount = function() {
+    return this.getMineralHarvesters().length;
 }
 
 Room.prototype.minerHelperCount = function() {
