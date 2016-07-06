@@ -19,10 +19,10 @@ Courier.prototype.performRole = function() {
 	const potentialTargets = this.room.getStructuresNeedingEnergyDelivery();
 	var dumpTarget = this.pos.findClosestByRange(potentialTargets);
 
-    if (this.carry.energy === this.carryCapacity) {
-		// If we're at full energy, we should deliver to a target
+    if (_.sum(this.carry) === this.carryCapacity) {
+		// If we're at full capacity, we should deliver to a target
       	this.memory.task = 'deliver';
-    } else if (!dumpTarget || this.carry.energy === 0) {
+    } else if (!dumpTarget || _.sum(this.carry) === 0) {
 		// If we don't have a target or we're out of energy, let's get some.
      	this.memory.task = 'pickup';
     }
@@ -37,20 +37,23 @@ Courier.prototype.performRole = function() {
         } else {
             dumpTarget = this.room.getControllerEnergyDropFlag();
         }
+		// However, if we are carrying non-energy, we should try to get to a storage
+		if (_.sum(this.carry) > 0 && this.carry.energy === 0) {
+			dumpTarget = this.room.getStorage();
+		}
     }
 
 	if (this.memory.task === 'pickup') {
       	if (!this.memory.target) {
 			// Pick up energy from the ground or harvesters
-        	const target = this.room.getEnergySourcesThatNeedsStocked()[0];
+			const target = this.room.getEnergySourcesThatNeedsStocked()[0];
 			this.memory.target = target ? target.id : '';
-        	/* TODO: Figure out why the below doesn't work. Is it because an array isn't always returned?
+			/* TODO: Figure out why the below doesn't work. Is it because an array isn't always returned?
 			if (target) {
 				// Let's find the closest target.
-
-				const tar = this.pos.findClosestByRange(target);
-            	this.memory.target = tar.id;
-          	}
+					const tar = this.pos.findClosestByRange(target);
+					this.memory.target = tar.id;
+			}
 			*/
       	}
       	if (this.memory.target) {
@@ -72,6 +75,10 @@ Courier.prototype.performRole = function() {
     } else {
         // console.log(this.name + " delivering to " + dumpTarget);
 		// this.memory.task === 'deliver'
+		if (_.sum(this.carry) > 0 && this.carry.energy === 0) {
+			dumpTarget = this.room.getStorage();
+			this.deliverMineralsTo(dumpTarget);
+		}
       	this.deliverEnergyTo(dumpTarget);
     }
 }

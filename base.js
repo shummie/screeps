@@ -40,6 +40,19 @@ Base.prototype.deliverEnergyToFlag = function(flag) {
 	}
 }
 
+Base.prototype.deliverMineralsTo = function(target) {
+	const range = this.pos.getRangeTo(target);
+	if (range <= 1) {
+		// We're next to the target, let's transfer energy.
+		for (var resourceType in this.carry) {
+			this.transfer(target, resourceType);
+		}
+	} else {
+		// Target might be moving, so don't {reusePath} here.
+		this.moveTo(target);
+	}
+}
+
 Base.prototype.dismantleFlag = function(flag) {
     const structure = this.room.getStructureAt(flag.pos);
     if (structure) {

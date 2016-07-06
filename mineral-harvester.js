@@ -12,8 +12,8 @@ class MineralHarvester extends Base {
 
 MineralHarvester.prototype.performRole = function() {
 	
-	if (this._.sum(creep.carry) < this.carryCapacity || this._.sum(creep.carry) === 0) {
-		const deposit = this.room.getMineralSites();
+	if (_.sum(this.carry) < this.carryCapacity || _.sum(this.carry) === 0) {
+		const deposit = this.room.getMineralSites()[0];
 		this.moveToAndHarvest(deposit);
 	} else {
 		// We have full capacity.
@@ -21,7 +21,7 @@ MineralHarvester.prototype.performRole = function() {
 		// But, if the storage is located nearby, let's just deliver it ourselves
 
 		// For now, just deliver. we'll need to code up a mineralcourier.
-		this.deliverMineralsTo(this.pos.getStorage());
+		this.deliverMineralsTo(this.room.getStorage());
 		/*
 		if (!this._storageRange) {
 			this._storageRange = this.pos.getRangeTo(this.room.getStorage());
