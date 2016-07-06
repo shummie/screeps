@@ -214,7 +214,7 @@ Room.prototype.getMailmans = function() {
     return this._mailmans;
 }
 
-Room.prototype.getMinerHelpers = function() {
+Room.prototype.getMineralHarvesters = function() {
     if (!this._mineralHarvesters) {
         this._mineralHarvesters = this.myCreeps().filter((creep) => {
             return creep.memory.role === 'mineralHarvester';
