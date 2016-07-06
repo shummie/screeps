@@ -4,7 +4,6 @@ var calculateCosts = function(bodyParts) {
         const part = typeof bodyPart === 'string' ? bodyPart : bodyPart.type;
         cost += BODYPART_COST[part];
     });
-
     return cost;
 }
 
@@ -84,12 +83,6 @@ StructureSpawn.prototype.buildUpgrader = function(availableEnergy) {
 
     console.log("Spawning an upgrader in Room " + this.room.name);
     this.createCreep(body, undefined, { role: 'upgrader' });
-}
-
-StructureSpawn.prototype.buildMinerHelper = function(availableEnergy) {
-	const body = [CARRY,MOVE,CARRY,MOVE,CARRY,MOVE];
-	console.log("Spawning a minerHelper in Room " + this.room.name);
-	this.createCreep(body, undefined, {role: 'minerHelper'});
 }
 
 StructureSpawn.prototype.buildCourier = function(availableEnergy) {
@@ -197,10 +190,8 @@ StructureSpawn.prototype.work = function() {
 	const courierCount = this.room.courierCount();
 	const upgraderCount = this.room.upgraderCount();
 	const builderCount = this.room.builderCount();
-	//const minerHelperCount = this.room.minerHelperCount();
 	const mailmanCount = this.room.mailmanCount();
 	//const spawnBuilderCount = this.room.spawnBuilderCount();
-	//const fixerCount = this.room.fixerCount();
     const availableEnergy = this.availableEnergy();
 
 	if (availableEnergy >= 300 && availableEnergy < this.maxEnergy()) {
@@ -217,14 +208,13 @@ StructureSpawn.prototype.work = function() {
     } else if (availableEnergy >= Math.max(300, this.maxEnergy() / 2)) {
         if (this.room.needsHarvesters()) {
             this.buildHarvester(availableEnergy);
-        } else if (courierCount < 2*harvesterCount) {
+        } else if (courierCount < harvesterCount) {
             this.buildCourier(availableEnergy);
         } else if (this.room.needsUpgraders()) {
             this.buildUpgrader(availableEnergy);
         // } else if (this.room.mailmanCount() < 2 && this.maxEnergy() < 600) {
         } else if (this.room.mailmanCount() < 2) {
 			this.buildMailman(availableEnergy);
-		//} else if (builderCount < 2 && this.room.getConstructionSites().length > 0) {
 		} else if (this.room.needsBuilders()) {
 			this.buildBuilder(availableEnergy);
 		} else if (this.room.hasExtractor() && this.room.mineralHarvesterCount() < 1) {

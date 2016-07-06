@@ -230,15 +230,6 @@ Room.prototype.getMineralSites = function() {
     return this._minerals;
 }
 
-Room.prototype.getMinerHelpers = function() {
-    if (!this._minerHelpers) {
-        this._minerHelpers = this.myCreeps().filter((creep) => {
-            return creep.memory.role === 'minerHelper';
-        });
-    }
-    return this._minerHelpers;
-}
-
 Room.prototype.getMyStructures = function() {
     if (!this._myStructures) {
         const structures = this.getStructures();
@@ -423,10 +414,6 @@ Room.prototype.mailmanCount = function() {
 
 Room.prototype.mineralHarvesterCount = function() {
     return this.getMineralHarvesters().length;
-}
-
-Room.prototype.minerHelperCount = function() {
-    return this.getMinerHelpers().length;
 }
 
 Room.prototype.myCreeps = function() {

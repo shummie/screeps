@@ -1,4 +1,3 @@
-
 require('creep-manager');
 require('source');
 require('controller');
@@ -7,7 +6,6 @@ require('structure');
 require('room-position');
 require('structure-manager');
 var enhancedGame = require('game');
-
 
 // Any modules that you use that modify the game's prototypes should be require'd
 // before you require the profiler.
