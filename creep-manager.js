@@ -9,6 +9,7 @@ var MinerHelper = require('miner-helper');
 var MineralHarvester = require('mineral-harvester');
 //import RemoteHarvester from '../roles/RemoteHarvester';
 //import Reserver from '../roles/Reserver';
+var RoadWorker = require('road-worker');
 //import RoadWorker from '../roles/RoadWorker';
 //import Scout from '../roles/Scout';
 //import ScoutHarvester from '../roles/ScoutHarvester';
@@ -40,6 +41,8 @@ function enhanceCreep(creep) {
         return new SpawnBuilder(creep);
     case 'mineralHarvester':
         return new MineralHarvester(creep);
+    case 'roadWorker':
+        return new RoadWorker(creep);
     }
 }
 

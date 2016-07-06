@@ -180,6 +180,12 @@ StructureSpawn.prototype.buildMineralHarvester = function(availableEnergy) {
 	}
 }
 
+StructureSpawn.prototype.buildRoadWorker = function() {
+	const body = [MOVE, WORK, WORK, CARRY];
+	console.log("Spawning a road worker in Room " + this.room.name);
+	this.createCreep(body, undefined, {role: 'roadWorker'});
+}
+
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
 		// We're busy, don't do anything else.
@@ -205,6 +211,8 @@ StructureSpawn.prototype.work = function() {
         	this.buildCourier(availableEnergy)
         } else if (this.room.needsUpgraders()) {
 			this.buildUpgrader(availableEnergy);
+        } else if (this.room.needsRoadWorkers()) {
+        	this.buildRoadWorker(availableEnergy);
         }
     } else if (availableEnergy >= Math.max(300, this.maxEnergy() / 2)) {
         if (this.room.needsHarvesters()) {
@@ -217,7 +225,7 @@ StructureSpawn.prototype.work = function() {
         } else if (this.room.mailmanCount() < 2) {
 			this.buildMailman(availableEnergy);
 		//} else if (builderCount < 2 && this.room.getConstructionSites().length > 0) {
-		} else if (builderCount < 2) {
+		} else if (this.room.needsBuilders()) {
 			this.buildBuilder(availableEnergy);
 		} else if (this.room.hasExtractor() && this.room.mineralHarvesterCount() < 1) {
 			this.buildMineralHarvester(availableEnergy);

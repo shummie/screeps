@@ -467,7 +467,7 @@ Room.prototype.needsHarvesters = function() {
     return this.getSourcesNeedingHarvesters().length > 0;
 }
 
-Room.prototype.needRoadWorkers = function() {
+Room.prototype.needsRoadWorkers = function() {
 	if (Game.time % 30 !== 0) {
 		return false;
 	}
