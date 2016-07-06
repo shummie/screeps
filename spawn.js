@@ -116,7 +116,7 @@ StructureSpawn.prototype.buildMailman = function(availableEnergy) {
     const body = [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY];
     //const body = [MOVE, MOVE, CARRY, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY, MOVE, CARRY];
     let cost = calculateCosts(body);
-    while (cost < availableEnergy) {
+    while (cost < availableEnergy && cost < 600) {
         body.push(MOVE);
         body.push(CARRY);
         cost += 100;
