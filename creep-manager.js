@@ -6,7 +6,7 @@ var Courier = require('courier');
 var Harvester = require('harvester');
 var Mailman = require('mailman');
 var MinerHelper = require('miner-helper');
-var MineralHarverster = require('mineral-harverster');
+var MineralHarverster = require('mineral-harvester');
 //import RemoteHarvester from '../roles/RemoteHarvester';
 //import Reserver from '../roles/Reserver';
 //import RoadWorker from '../roles/RoadWorker';
