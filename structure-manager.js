@@ -2,6 +2,7 @@
 import Extension from '../structures/Extension';
 import Rampart from '../structures/Rampart';
 */
+var Flag = require('flag');
 var Spawn = require('spawn');
 var Tower = require('tower');
 var Link = require('link');

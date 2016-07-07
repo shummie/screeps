@@ -342,6 +342,14 @@ Room.prototype.getUpgraders = function() {
     return this._upgraders;
 }
 
+Room.prototype.getXCoord = function() {
+    return xValueFromRoomName(this.name);
+}
+
+Room.prototype.getYCoord = function() {
+    return yValueFromRoomName(this.name);
+}
+
 Room.prototype.harvesterCount = function() {
     return this.getHarvesters().length;
 }
@@ -570,6 +578,9 @@ Room.prototype.work = function() {
     });
     this.myCreeps().forEach((creep) => {
       	creep.work();
+    });
+    this.getFlags().forEach((flag) => {
+        flag.work();
     });
 
     if (this.getControllerOwned()) {
