@@ -1,3 +1,5 @@
+var creepManager = require('creep-manager');
+
 const neutralStructures = [
 	STRUCTURE_ROAD,
 	STRUCTURE_CONTAINER,

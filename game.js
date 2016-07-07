@@ -36,6 +36,17 @@ EnhancedGame.clearAllFlags = function () {
     });
 }
 
+EnhancedGame.flagsWithoutRoomKey = function() {
+    // Unless we've visited? a room, it doesn't show up in the list of Game.rooms.
+    // Get a list of flags that don't have a room
+    const allFlags = this.flagArray();
+    const roomKeys = Object.keys(Game.rooms);
+    const orphanFlags = allFlags.filter(flag => {
+        return (flag.room === undefined);
+    });
+    return orphanFlags;
+}
+
 EnhancedGame.getScoutFlags = function() {
     if (scoutFlags === undefined) {
     	scoutFlags = getFlagsOfType('scout');
