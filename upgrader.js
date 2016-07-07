@@ -24,6 +24,4 @@ Upgrader.prototype.performRole = function() {
 	}
 }
 
-
-
 module.exports = Upgrader;
