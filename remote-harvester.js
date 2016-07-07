@@ -31,7 +31,7 @@ RemoteHarvester.prototype.performRole = function () {
 	}
 }
 
-RemoveHarvester.prototype.handleFull = function() {
+RemoteHarvester.prototype.handleFull = function() {
 	const inRange = thing => this.pos.getRangeTo(thing) < 4;
 	const constructionSites = this.room.getConstructionSites().filter(inRange);
 	const container = this.room.getContainers().find(inRange);
