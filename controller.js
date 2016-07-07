@@ -12,5 +12,4 @@ StructureController.prototype.placeFlags = function() {
     });
     // manually build links for now
     //this.room.createBuildFlag(buildAblePositions[0], STRUCTURE_LINK);
-  }
-
+}

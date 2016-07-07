@@ -1,9 +1,9 @@
 var Base = require('base');
 
 class Mailman extends Base {
-  constructor(creep) {
-    super(creep);
-  }
+    constructor(creep) {
+        super(creep);
+    }
 }
 
 Mailman.prototype.performRole = function() {
