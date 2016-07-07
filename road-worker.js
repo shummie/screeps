@@ -22,7 +22,10 @@ RoadWorker.prototype.performRole = function() {
 		const roads = this.room.getRoads().filter(road => {
 			return road.hits < road.hitsMax;
 		});
-		this.moveToAndRepair(road);
+		if (roads.length) {
+        const road = this.pos.findClosestByRange(roads);
+        this.moveToAndRepair(road);
+      } 
 	}
 }
 
