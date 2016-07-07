@@ -31,7 +31,7 @@ RemoteHarvester.prototype.performRole = function () {
 	}
 }
 
-RemoveHarvesters.prototype.handleFull = function() {
+RemoveHarvester.prototype.handleFull = function() {
 	const inRange = thing => this.pos.getRangeTo(thing) < 4;
 	const constructionSites = this.room.getConstructionSites().filter(inRange);
 	const container = this.room.getContainers().find(inRange);
@@ -51,11 +51,11 @@ RemoveHarvesters.prototype.handleFull = function() {
 	}
 }
 
-RemoteHarvesters.prototype.isFull = function() {
+RemoteHarvester.prototype.isFull = function() {
 	return !(this.carry.energy < this.carryCapacity || this.carry.energy === 0)
 }
 
-RemoteHarvesters.prototype.acquireTarget = function() {
+RemoteHarvester.prototype.acquireTarget = function() {
 	// As a reminder, the room searches through the memory of all the creeps in the room.
 	// only harvesters have memory.source stored so it cycles through all of them.
 	this.memory.source = this.room.getSourcesNeedingHarvesters()[0].id;
