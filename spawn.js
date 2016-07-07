@@ -179,6 +179,13 @@ StructureSpawn.prototype.buildRoadWorker = function() {
 	this.createCreep(body, undefined, {role: 'roadWorker'});
 }
 
+StructureSpawn.prototype.buildRemoteHarvester = function() {
+	const target = this.room.getReserveFlagsNeedingRemoteHarvesters()[0];
+	const body = [MOVE,WORK,WORK,CARRY,MOVE];
+	console.log("Spawning a remote harvester in Room " + this.room.name);
+	this.createCreep(body, undefined, {role: 'remoteHarvester', spawn: this.name, flag: target.name});	
+}
+
 StructureSpawn.prototype.work = function() {
 	if (this.spawning) {
 		// We're busy, don't do anything else.

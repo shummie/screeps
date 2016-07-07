@@ -239,6 +239,16 @@ Room.prototype.getMyStructures = function() {
     return this._myStructures;
 }
 
+Room.prototype.getReserveFlags = function() {
+    return Game.flagArray().filter(flag => {
+        return flag.isReserveFlag() && this.distanceToRoom(flag.pos.roomName) === 1;
+    });
+}
+
+Room.prototype.getReserveFlagsNeedingRemoteHarvesters = function() {
+    return this.getReserveFlags().filter(flag => flag.needsRemoteHarvesters());
+}
+
 Room.prototype.getRoads = function() {
 	if(!this._roads) {
 		this._roads = this.getStructures().filter(structure => {
@@ -452,6 +462,10 @@ Room.prototype.needsCouriers = function() {
 
 Room.prototype.needsHarvesters = function() {
     return this.getSourcesNeedingHarvesters().length > 0;
+}
+
+Room.prototype.needsRemoteHarvesters = function() {
+    return this.getReserveFlagsNeedingRemoteHarvesters().length > 0;
 }
 
 Room.prototype.needsRoadWorkers = function() {
