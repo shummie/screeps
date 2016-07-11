@@ -173,17 +173,23 @@ StructureSpawn.prototype.buildMineralHarvester = function(availableEnergy) {
 	}
 }
 
-StructureSpawn.prototype.buildRoadWorker = function() {
+StructureSpawn.prototype.buildRoadWorker = function(availableEnergy) {
 	const body = [MOVE, WORK, WORK, CARRY];
 	console.log("Spawning a road worker in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'roadWorker'});
 }
 
-StructureSpawn.prototype.buildRemoteHarvester = function() {
+StructureSpawn.prototype.buildRemoteHarvester = function(availableEnergy) {
 	const target = this.room.getReserveFlagsNeedingRemoteHarvesters()[0];
 	const body = [MOVE,WORK,WORK,CARRY,MOVE];
 	console.log("Spawning a remote harvester in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'remoteHarvester', spawn: this.name, flag: target.name});	
+}
+
+StructureSpawn.prototype.buildWanderer = function(availableEnergy) {
+    const body = [MOVE]
+    console.log("Spawning a wanderer in Room " + this.room.name);
+    this.createCreep(body, undefined, {role: 'wanderer'});
 }
 
 StructureSpawn.prototype.work = function() {
@@ -229,7 +235,9 @@ StructureSpawn.prototype.work = function() {
 		} else if (this.room.controller.ticksToDowngrade <= 3000) {
 			// Something has gone wrong, make sure we upgrade this controller
 			this.buildUpgrader(availableEnergy);
-		}
+		} else if (this.room.needsWanderers()) {
+            this.buildWanderer(availableEnergy);
+        }
 	}
 }
 

@@ -23,6 +23,10 @@ function getAllClaimers() {
 	return creepManager.creepsWithRole("claimer");
 }
 
+function getAllWanderers() {
+    return creepManager.creepsWithRole("wanderer");
+}
+
 function xValueFromRoomName(roomName) {
 	return coordValue(roomName, /([WE]\d+)/);
 }
@@ -487,6 +491,10 @@ Room.prototype.needsUpgraders = function() {
     const hasFreeEdges = this.upgraderCount() < this.controller.pos.freeEdges();
 	//return hasFreeEdges & !!this.droppedControllerEnergy() && this.upgraderWorkParts() < this.maxEnergyProducedPerTick();
 	return hasFreeEdges && this.upgraderWorkParts() < this.maxEnergyProducedPerTick() && !this.getConstructionSites().length;
+}
+
+Room.prototype.needsWanderers = function() {
+    return getAllWanderers().length < 1;
 }
 
 Room.prototype.placeConstructionFlags = function() {

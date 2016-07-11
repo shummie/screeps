@@ -12,7 +12,7 @@ var RoadWorker = require('road-worker');
 //import ScoutHarvester from '../roles/ScoutHarvester';
 var SpawnBuilder = require('spawnbuilder');
 var Upgrader = require('upgrader');
-//import Wanderer from '../roles/Wanderer';
+var Wanderer = require('wanderer');
 
 function enhanceCreep(creep) {
   switch(creep.memory.role) {
@@ -36,6 +36,8 @@ function enhanceCreep(creep) {
         return new RoadWorker(creep);
     case 'remoteHarvester':
         return new RemoteHarvester(creep);
+    case 'wanderer':
+        return new Wanderer(creep);
     }
 }
 
