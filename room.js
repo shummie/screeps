@@ -502,7 +502,7 @@ Room.prototype.placeConstructionFlags = function() {
 	// this.placeWallFlags();
 }
 
-Room.prototype.placeContainerFlag = function() {
+Room.prototype.placeContainerFlag = function(pos) {
 	this.createBuildFlag(pos, STRUCTURE_CONTAINER);
 }
 
