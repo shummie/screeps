@@ -21,7 +21,11 @@ Flag.prototype.needsRemoteHarvesters = function() {
 		return creep.memory.flag === this.name;
 	});
 
-	return remoteHarvesters.length < this.memory.sources.length;
+	if (this.isBlind) {
+		return remoteHarvesters.length === 0;
+	} else {
+		return remoteHarvesters.length < this.memory.sources.length;
+	}
 }
 
 Flag.prototype.performReserveFlagRole = function() {
@@ -34,7 +38,11 @@ Flag.prototype.performReserveFlagRole = function() {
 			const reservationTime = reservation && reservation.ticksToEnd || 0;
 			this.memory.reservationTime = reservationTime;
 			this.memory.sources = room.getSources().map(source => source.id);
+		} else {
+			// We can't find the room!
+			this.isBlind = true;
 		}
+
 	} else {
 		this.memory.reservationTime = Math.max(this.memory.reservationTime - rate, 0);
 	}
