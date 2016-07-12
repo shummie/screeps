@@ -44,7 +44,9 @@ RemoteCourier.prototype.performPickup = function() {
 		this.moveTo(this.flag());
 	} else {
 		const target = this.room.getEnergySourcesThatNeedsStocked()[0];
-		this.takeEnergyFrom(target);
+		if (target) {
+			this.takeEnergyFrom(target);
+		}
 	}
 }
 
