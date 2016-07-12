@@ -19,7 +19,7 @@ Wanderer.prototype.performRole = function () {
 }
 
 Wanderer.prototype.acquireTarget = function() {
-	if (!this.memory.targetExit || this.memory.targetExit !== this.room.name) {
+	if (!this.memory.targetExit || this.memory.targetExit.room !== this.room.name) {
 		// We're in a new room, attempt to reserve it
 		// Code not implemented, for now, this is purposefully a manual process. Do we really want to reserve all neighboring rooms?
 		//this.room.attemptReserve(); 
