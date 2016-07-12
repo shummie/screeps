@@ -235,8 +235,8 @@ StructureSpawn.prototype.work = function() {
 		} else if (this.room.controller.ticksToDowngrade <= 3000) {
 			// Something has gone wrong, make sure we upgrade this controller
 			this.buildUpgrader(availableEnergy);
-		} else if (this.room.needsWanderers()) {
-            this.buildWanderer(availableEnergy);
+		//} else if (this.room.needsWanderers()) {
+        //    this.buildWanderer(availableEnergy);
         }
 	}
 }
