@@ -249,6 +249,10 @@ Room.prototype.getReserveFlags = function() {
     });
 }
 
+Room.prototype.getReserveFlagsNeedingRemoteCouriers = function() {
+    return this.getReserveFlags().filter(flag => flag.needsRemoteHarvesters());
+}
+
 Room.prototype.getReserveFlagsNeedingRemoteHarvesters = function() {
     return this.getReserveFlags().filter(flag => flag.needsRemoteHarvesters());
 }
@@ -474,6 +478,10 @@ Room.prototype.needsCouriers = function() {
 
 Room.prototype.needsHarvesters = function() {
     return this.getSourcesNeedingHarvesters().length > 0;
+}
+
+Room.prototype.needsRemoteCouriers = function() {
+    return this.getReserveFlagsNeedingRemoteCouriers().length > 0;
 }
 
 Room.prototype.needsRemoteHarvesters = function() {

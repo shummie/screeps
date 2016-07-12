@@ -16,6 +16,14 @@ Flag.prototype.isReserveFlag = function() {
 	return this.name.indexOf('reserve') === 0;
 }
 
+Flag.prototype.needsRemoteCouriers = function() {
+	const couriers = creepManager.creepsWithRole('remoteCourier').filter(creep => {
+		return creep.memory.flag === this.name;
+	});
+
+	return couriers.length < this.memory.sources.length;
+}
+
 Flag.prototype.needsRemoteHarvesters = function() {
 	const remoteHarvesters = creepManager.creepsWithRole('remoteHarvester').filter(creep => {
 		return creep.memory.flag === this.name;

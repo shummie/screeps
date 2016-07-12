@@ -5,6 +5,7 @@ var Harvester = require('harvester');
 var Mailman = require('mailman');
 var MineralHarvester = require('mineral-harvester');
 var RemoteHarvester = require('remote-harvester');
+var RemoteCourier = require('remote-courier');
 //import RemoteHarvester from '../roles/RemoteHarvester';
 //import Reserver from '../roles/Reserver';
 var RoadWorker = require('road-worker');
@@ -36,6 +37,8 @@ function enhanceCreep(creep) {
         return new RoadWorker(creep);
     case 'remoteHarvester':
         return new RemoteHarvester(creep);
+    case 'remoteCourier': 
+        return new RemoteCourier(creep);
     case 'wanderer':
         return new Wanderer(creep);
     }

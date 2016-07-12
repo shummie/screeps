@@ -181,9 +181,29 @@ StructureSpawn.prototype.buildRoadWorker = function(availableEnergy) {
 
 StructureSpawn.prototype.buildRemoteHarvester = function(availableEnergy) {
 	const target = this.room.getReserveFlagsNeedingRemoteHarvesters()[0];
-	const body = [MOVE,WORK,WORK,CARRY,MOVE];
+	const body = [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                  WORK,WORK,WORK,WORK,WORK,CARRY,CARRY];
 	console.log("Spawning a remote harvester in Room " + this.room.name);
 	this.createCreep(body, undefined, {role: 'remoteHarvester', spawn: this.name, flag: target.name});	
+}
+
+StructureSpawn.prototype.buildRemoteCourier = function(availableEnergy) {
+    const target = this.room.getReserveFlagsNeedingRemoteCouriers()[0];
+    const body = []
+    while (body.length < 20) {
+        body.push(MOVE);
+        body.push(CARRY);
+    }   
+    
+    var cost = calculateCosts(body);
+    while (cost > availableEnergy) {
+        body.pop();
+        body.pop();
+        cost = calculateCosts(body);
+    }
+
+    console.log ("Spawning a remote courier in Room " + this.room.name);
+    this.createCreep(body, undefined, {role: 'remoteCourier', spawn: this.name, flag: target.name});
 }
 
 StructureSpawn.prototype.buildWanderer = function(availableEnergy) {
@@ -237,6 +257,8 @@ StructureSpawn.prototype.work = function() {
 			this.buildUpgrader(availableEnergy);
         } else if (this.room.needsRemoteHarvesters()) {
             this.buildRemoteHarvester(availableEnergy);
+        } else if (this.room.needsRemoteCouriers()) {
+            this.buildRemoteCourier(availableEnergy);
         }
         //} else if (this.room.needsWanderers()) {
         //    this.buildWanderer(availableEnergy);
