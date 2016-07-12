@@ -632,7 +632,9 @@ Room.prototype.getEnergySourcesThatNeedsStocked = function() {
     } else if (this.getCreepsThatNeedOffloading().length) {
 		// Energy located on creeps that need to offload their energy (harvesters only)
         return this.getCreepsThatNeedOffloading();
-	}
+	} else if (this.getContainers().length) {
+        return this.getContainers().filter(container => !container.isEmpty());
+    }
 	// Do we want to check for storage?? I don't know why we would... I guess it is a place to get energy...?
 	/*
     } else if (this.getStorage() && !this.getStorage().isEmpty()) {
