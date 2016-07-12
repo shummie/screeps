@@ -250,7 +250,7 @@ Room.prototype.getReserveFlags = function() {
 }
 
 Room.prototype.getReserveFlagsNeedingRemoteCouriers = function() {
-    return this.getReserveFlags().filter(flag => flag.needsRemoteHarvesters());
+    return this.getReserveFlags().filter(flag => flag.needsRemoteCouriers());
 }
 
 Room.prototype.getReserveFlagsNeedingRemoteHarvesters = function() {
