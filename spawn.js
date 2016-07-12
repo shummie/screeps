@@ -227,7 +227,7 @@ StructureSpawn.prototype.work = function() {
 	//const spawnBuilderCount = this.room.spawnBuilderCount();
     const availableEnergy = this.availableEnergy();
 
-	if (availableEnergy >= 300 && availableEnergy < this.maxEnergy()) {
+	if (availableEnergy >= 300 && availableEnergy < Math.max(this.maxEnergy()/2, 400) {
 		if (harvesterCount < 1) {
 			this.buildHarvester(availableEnergy);
 		//} else if (this.room.needsCouriers()) {
