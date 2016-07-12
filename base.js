@@ -151,7 +151,7 @@ Base.prototype.needsEnergyDelivered = function() {
     // If this creep has less than 60% of its carry capcity available, then we want someone to deliver energy to this creep.
     // Harvesters never need energy delivered since they harvest energy
     // Couriers and Mailmans don't need energy delivered, they take energy and deliver to other people.
-    const blacklist = ['harvester', 'courier', 'mailman'];
+    const blacklist = ['harvester', 'courier', 'mailman', 'remoteHarvester'];
     if (blacklist.indexOf(this.memory.role) !== -1) {
         return false;
     }
